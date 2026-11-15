@@ -43,7 +43,7 @@
       "height": 260,
       "config": {
         "node_title": "Lane A near aperture",
-        "size": 128,
+        "size": 96,
         "speed": 0.5,
         "damping": 0.006,
         "substeps": 4,
@@ -66,7 +66,7 @@
       "height": 260,
       "config": {
         "node_title": "Lane B farther aperture",
-        "size": 128,
+        "size": 96,
         "speed": 0.5,
         "damping": 0.006,
         "substeps": 4,
@@ -89,7 +89,7 @@
       "height": 130,
       "config": {
         "node_title": "Arrival A",
-        "threshold": 0.01
+        "threshold": 0.919588565826416
       }
     },
     {
@@ -101,7 +101,7 @@
       "height": 130,
       "config": {
         "node_title": "Arrival B",
-        "threshold": 0.01
+        "threshold": 0.6591460704803467
       }
     },
     {

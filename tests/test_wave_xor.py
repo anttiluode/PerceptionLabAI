@@ -48,6 +48,15 @@ class WaveXORTests(unittest.TestCase):
             self.assertIn(edge["to_port"],y.inputs)
             self.assertEqual(x.outputs[edge["from_port"]],y.inputs[edge["to_port"]])
 
+    def test_workflow_matches_calibrated_96_grid(self):
+        data=json.loads((ROOT/"workflows"/"002_wavefield_resonator_xor.json").read_text())
+        byid={n["id"]:n for n in data["nodes"]}
+        self.assertEqual(byid[2]["config"]["size"],96)
+        self.assertEqual(byid[3]["config"]["size"],96)
+        self.assertEqual(byid[1]["config"]["warmup"]-byid[0]["config"]["warmup"],-5)
+        self.assertGreater(byid[4]["config"]["threshold"],0)
+        self.assertGreater(byid[5]["config"]["threshold"],0)
+
     def test_one_case_no_pulse_is_silent_and_logic_exact(self):
         upstream=ROOT/"PerceptionLab"
         if not (upstream/"nodes"/"wavefieldnode.py").exists():

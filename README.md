@@ -31,3 +31,9 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md). For each experiment: create a numbered 
 - **Upstream proposal:** [PerceptionLab PR #1](https://github.com/anttiluode/PerceptionLab/pull/1) — reusable node and workflow staged for review; **not merged** as of this note.
 
 The next experiments should challenge the result with speed/distance changes, independent input patterns, and explicit failures, rather than assuming success generalizes.
+
+## Experiment 002 — physical transit into resonator logic
+
+[Wave-field / ResonatorSoma XOR timing experiment](experiments/002_wave_xor/README.md) · [saved 96×96 workflow](workflows/002_wavefield_resonator_xor.json) · [arrival gate node](nodes/wave_arrival_gate_node.py) · [first CI run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686062648).
+
+The first real-wave sweep found peak overlap at a **−5-frame** offset, matching 4.94 frames of independently predicted extra travel, with no incorrect XOR outputs. This demonstrates timing sensitivity of a **pre-existing XOR gate**, not spontaneously learned logic. A farther-aperture control is underway and results will be retained.
