@@ -44,6 +44,7 @@ class PopulationOrderReadoutNode(BaseNode):
             spike=float(spike) if spike is not None and math.isfinite(float(spike)) else 0.0
             self.spike_memory[i]=self.spike_decay*self.spike_memory[i]+(1-self.spike_decay)*(1 if spike>0 else 0)
         x=traces+list(map(float,self.spike_memory))
+        self.features=list(x)  # precise post-step features used in training
         self.score=float(self.bias+sum(w*v for w,v in zip(self.weights,x)))
         self.ready=1.0 if self.epoch>=self.start_frame else 0.0
         self.decision=(1.0 if self.score>=0 else -1.0) if self.ready else 0.0
