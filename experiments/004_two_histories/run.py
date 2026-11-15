@@ -105,9 +105,9 @@ def apply_thresholds(graph,calibration):
     return g
 
 
-def advance(obj,edges,steps,cut_b_at=None,record_energy=True):
+def advance(obj,edges,steps,cut_b_at=None,cut_a_at=None,record_energy=True):
     """Prestep ALL -> transfer ALL OLD outputs -> step ALL -> measure."""
-    record={"spikes":{"2":[],"3":[]},"trace":{"2":[],"3":[]}}
+    record={"spikes":{"2":[],"3":[]},"trace":{"2":[],"3":[]},"armed":{"2":[],"3":[]}}
     maximum_field=0.
     saturated_frames=0
     energy_samples=[]
@@ -121,6 +121,10 @@ def advance(obj,edges,steps,cut_b_at=None,record_energy=True):
             n.pre_step()
         for e in edges:
             if e["to_node_id"] not in causal:
+                continue
+            if (cut_a_at is not None and tick>=cut_a_at and
+                e["from_node_id"]==2 and e["to_node_id"]==1 and
+                e["from_port"]=="pulse"):
                 continue
             if (cut_b_at is not None and tick>=cut_b_at and
                 e["from_node_id"]==3 and e["to_node_id"]==1 and
@@ -137,6 +141,7 @@ def advance(obj,edges,steps,cut_b_at=None,record_energy=True):
         for i in (2,3):
             unit=obj[i]
             record["trace"][str(i)].append(float(unit.trace))
+            record["armed"][str(i)].append(int(unit.armed))
             if unit.get_output("pulse")>0:
                 record["spikes"][str(i)].append(tick)
         if record_energy:
@@ -193,10 +198,10 @@ def phase_metrics(a,b,steps):
     return out
 
 
-def run_case(upstream,graph,thresholds,steps=650,cut_b_at=None):
+def run_case(upstream,graph,thresholds,steps=650,cut_b_at=None,cut_a_at=None):
     graph=apply_thresholds(graph,thresholds)
     obj=prepare(graph,upstream)
-    rec,eng=advance(obj,graph["edges"],steps,cut_b_at=cut_b_at)
+    rec,eng=advance(obj,graph["edges"],steps,cut_b_at=cut_b_at,cut_a_at=cut_a_at)
     spikes=rec["spikes"]
     return {
         "spike_times":{"A":spikes["2"],"B":spikes["3"]},
@@ -206,8 +211,23 @@ def run_case(upstream,graph,thresholds,steps=650,cut_b_at=None):
         "phase":phase_metrics(spikes["2"],spikes["3"],steps),
         "max_trace":{"A":round(max(rec["trace"]["2"]),7),
                      "B":round(max(rec["trace"]["3"]),7)},
+        "late_trace_state":{
+            label:{
+                "min":round(min(rec["trace"][str(i)][steps//2:]),7),
+                "mean":round(statistics.mean(rec["trace"][str(i)][steps//2:]),7),
+                "max":round(max(rec["trace"][str(i)][steps//2:]),7),
+                "fraction_armed":round(statistics.mean(
+                    rec["armed"][str(i)][steps//2:]),6),
+                "release_threshold":round(float(obj[i].release_threshold),7),
+                "fraction_above_release":round(sum(
+                    t>obj[i].release_threshold for t in
+                    rec["trace"][str(i)][steps//2:])/
+                    len(rec["trace"][str(i)][steps//2:]),6)
+            } for label,i in (("A",2),("B",3))
+        },
         "energy":eng,
-        "cut_b_at":cut_b_at
+        "cut_b_at":cut_b_at,
+        "cut_a_at":cut_a_at
     }
 
 
@@ -241,6 +261,16 @@ def main(upstream,size=96,steps=650):
         upstream,graphs["swap_sites"],base_cal,steps)
     cases["cut_b_midrun"]=run_case(
         upstream,graphs["coupled"],base_cal,steps,cut_b_at=steps//2)
+    cases["cut_a_midrun"]=run_case(
+        upstream,graphs["coupled"],base_cal,steps,cut_a_at=steps//2)
+    for strength in (0.25,0.50,0.75):
+        modified=copy.deepcopy(graphs["coupled"])
+        for e in modified["edges"]:
+            if (e["from_node_id"]==2 and e["to_node_id"]==1 and
+                e["from_port"]=="pulse"):
+                e["learned_weight"]=strength
+        cases["a_return_"+str(strength)]=run_case(
+            upstream,modified,base_cal,steps)
     return {
         "experiment":"004_two_histories",
         "upstream":"PerceptionLab/main; actual WaveField and PulseSource",
@@ -274,6 +304,8 @@ if __name__=="__main__":
                   "period_B":c["phase"]["b"]["mean_isi"],
                   "R":c["phase"]["phase_concentration_r"],
                   "interleaving":c["phase"]["interleaving_fraction"],
-                  "clip_frames":c["energy"]["saturated_frames"]}
+                  "clip_frames":c["energy"]["saturated_frames"],
+                  "B_armed_fraction":c["late_trace_state"]["B"]["fraction_armed"],
+                  "B_above_release":c["late_trace_state"]["B"]["fraction_above_release"]}
             for name,c in res["cases"].items()}
     },indent=2))
