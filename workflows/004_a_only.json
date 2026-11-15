@@ -52,8 +52,8 @@
       "config": {
         "node_title": "A / FAST fade 0.86",
         "decay": 0.86,
-        "arm_threshold": 0.08,
-        "release_threshold": 0.03,
+        "arm_threshold": 0.10849628199708476,
+        "release_threshold": 0.04822056977648212,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
@@ -69,8 +69,8 @@
       "config": {
         "node_title": "B DISABLED - A alone",
         "decay": 0.95,
-        "arm_threshold": 0.05,
-        "release_threshold": 0.02,
+        "arm_threshold": 0.033508825549428974,
+        "release_threshold": 0.014892811355301766,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 0
