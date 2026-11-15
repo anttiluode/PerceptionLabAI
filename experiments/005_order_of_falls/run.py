@@ -334,7 +334,10 @@ if __name__=="__main__":
         "calibration":result["calibration"],
         "no_input":result["modes"]["no_input"],
         "modes":{k:{
-            "snapshots":{t:x["test"] for t,x in v["stages"].items()},
+            "snapshots":{t:{"combined":x["test"],
+                             "traces":x["ablation_readouts"]["traces_only"],
+                             "spike_history":x["ablation_readouts"]["spike_history_only"]}
+                             for t,x in v["stages"].items()},
             "spikes":v["spikes"],"max_abs_wave":v["max_abs_wave"]}
             for k,v in result["modes"].items() if k!="no_input"}}
     print(json.dumps(report,indent=2))
