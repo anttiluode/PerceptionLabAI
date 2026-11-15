@@ -14,6 +14,7 @@ reusable graphs should be proposed upstream.
 | 003 | [Self-regenerating fade loop](../workflows/003_fading_feedback_wave.json) | `FadingHistorySpikeNode` | Does a pulse fired at the end of a fading history regenerate activity through the wave? | GUI verified after size repair, recurrence requires feedback; [dossier](../experiments/003_fade_closed_loop/README.md) |
 | 004 | [Two fades, one field](../workflows/004_two_fades_one_field.json) | Reuses `FadingHistorySpikeNode` twice | Can two different histories influence each other's timing? | **Two tested regimes: suppression at A=0.50+, alternating mutual regeneration at A=0.15–0.45**: [004](../experiments/004_two_histories/README.md) |
 | 007 | [Homeostatic A return](../workflows/007_homeostatic_a_return.json) | `HomeostaticReturnGateNode` | Can a return edge reach the turn-taking regime using only its own unit's firing rate? | **Yes from five starting weights: 1.00 → 0.41, B rescued, alternation at ~104 frames; an isolated loop dies**: [007](../experiments/007_homeostatic_return/README.md) |
+| 008 | [Self-tuning, three units](../workflows/008_AB_self_tuning_live.json) | Reuses `HomeostaticReturnGateNode` three times | Does a self-tuned network hold AB/BA order better than hand-set weights? | **No: 60/96 against 81/96 held-out, p = 0.0003**: [008](../experiments/008_self_tuned_order/README.md) |
 
 004 controls available as GUI-loadable graphs:
 [ A alone ](../workflows/004_a_only.json),
@@ -149,3 +150,17 @@ All five graphs are the measured 004 system (same field, source, units and thres
 Runner-only variants (fixed-weight sweep, other starting weights, targets, learning rates and rate windows, plus labelled post-hoc checks) are in the receipt.
 
 **Manual use:** copy `homeostatic_return_gate_node.py` and `fading_history_spike_node.py` from workshop `nodes/` into upstream PerceptionLab `nodes/`, restart, load a `007_*.json`. The extra plotter shows A's weight and A's rate over target; that plotter draws its "Red" input in blue. **GUI observation, 15 November 2026 (Antti, screenshots):** the [both-homeostatic graph](../workflows/007_both_homeostatic.json) was run interactively in PerceptionLab. Early: A weight 0.61, A rate 3.65 times target, B silent (0 pulses), field energy 0.0040. Later: A weight 0.36, A rate 0.87 times target, B at 11 pulses, field energy 0.0001, with A and B pulses visibly alternating in the shared-wave scope. This matches the headless run, where the weight bottoms at 0.358 before rising toward 0.41. The other four 007 graphs have not been run in the GUI.
+
+## 008 — Self-tuned returns and order memory (negative result)
+
+*Added by Claude Fable 5.2, 15 November 2026.* [Report](../experiments/008_self_tuned_order/README.md) · [Receipt](../results/008_self_tuned_order.json).
+
+All five graphs are the 005b three-active circuit with each of the three returns routed through a `HomeostaticReturnGateNode` (same one-frame delay everywhere) and an extra plotter showing the three return weights.
+
+- [Self-tuning live, AB](../workflows/008_AB_self_tuning_live.json) — gates learning from the 005b weights (0.30, 1.00, 0.50). This is the label-free development phase.
+- [Self-tuned frozen, AB](../workflows/008_AB_self_tuned_frozen.json) · [BA](../workflows/008_BA_self_tuned_frozen.json) — weights 0.22, 0.90, 0.47, learning off.
+- [Hand-set through gates, AB](../workflows/008_AB_fixed_gated.json) · [BA](../workflows/008_BA_fixed_gated.json) — weights 0.30, 1.00, 0.50, learning off.
+
+**Measured headless, 96 held-out runs at frame 650:** hand-set 81, C's return cut 85, self-tuned frozen 60, self-tuned live 75, passive 48, uniform control 46, rotated control 65. Self-tuned is worse than hand-set (paired p = 0.0003). Cutting C's return is not distinguishable from keeping it (p = 0.48), which does not support the 16-run result of 005b.
+
+The order readout node in these graphs is untrained; readers are fitted offline. Copy the three workshop nodes into PerceptionLab `nodes/`, restart and load. **No 008 graph has been run in the GUI.**

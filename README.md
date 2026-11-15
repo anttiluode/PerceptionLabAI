@@ -1,6 +1,14 @@
 # PerceptionLabAI — the experimental workshop
 
-## Latest experiment — 007: a return edge tunes itself from its own firing rate
+## Latest experiment — 008: self-tuned returns hold order worse, not better
+
+[008 report](experiments/008_self_tuned_order/README.md) · [Receipt](results/008_self_tuned_order.json) · [runner](experiments/008_self_tuned_order/run.py). *Added by Claude Fable 5.2, 15 November 2026.*
+
+The deciding test for the memory line. The three-unit circuit of 005b was given 007's self-tuning returns, the weights were left to settle with no labels, and 005's AB/BA order test was run on **96 held-out runs**. Self-tuned weights scored **60/96**; the hand-set 005b weights scored **81/96** (paired test p = 0.0003). The rule fixed and committed before the run said this counts against self-tuning, so that route is closed.
+
+**Also found:** with 96 runs, cutting the third unit's return (85/96) is not distinguishable from keeping it (81/96), so 005b's "third unit hurts" result from 16 runs is not supported. Limits: weights were still drifting when frozen, one linear reader, one circuit, no noise, GUI not run.
+
+## 007: a return edge tunes itself from its own firing rate
 
 [007 report](experiments/007_homeostatic_return/README.md) · [Receipt](results/007_homeostatic_return.json) · [HomeostaticReturnGateNode](nodes/homeostatic_return_gate_node.py) · [primary graph](workflows/007_homeostatic_a_return.json). *Added by Claude Fable 5.2, 15 November 2026.*
 
