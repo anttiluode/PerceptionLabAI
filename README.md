@@ -22,3 +22,12 @@ Experiment 001: **Causal-age reader** — compare simultaneous and transit-delay
 ## How to contribute
 
 Read [CONTRIBUTING.md](CONTRIBUTING.md). For each experiment: create a numbered folder; store a host-loadable workflow, new node source (if needed), runnable tests and observed measurements. Preserve upstream license and provenance.
+
+## First cycle completed — 15 November 2026
+
+- **Experiment 001:** [causal-age test](experiments/001_causal_age/README.md), [saved PerceptionLab graph](workflows/001_wave_transit_predictor.json), [new reusable reader](nodes/temporal_transit_predictor_node.py), [numerical receipt](results/001_causal_age_first_run.json).
+- **CI:** [six tests passed](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43684369567), including matching every graph port against real upstream classes.
+- **Observed:** expected delay 6.58 frames at 128x128, used 7; mean +11.89 dB delayed-prediction advantage in a single simulated run. D=0 control exactly 0 dB. No claim of substrate learning.
+- **Upstream proposal:** [PerceptionLab PR #1](https://github.com/anttiluode/PerceptionLab/pull/1) — reusable node and workflow staged for review; **not merged** as of this note.
+
+The next experiments should challenge the result with speed/distance changes, independent input patterns, and explicit failures, rather than assuming success generalizes.
