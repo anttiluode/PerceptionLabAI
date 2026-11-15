@@ -40,3 +40,15 @@ favors D; negative or ambiguous results must be retained.
 integer-delay approximation, and old-host one-step output transport.
 Even success is evidence of *time-of-flight information*, not learning,
 cognition or biological memory.
+
+## First measured receipt — 15 November 2026
+
+GitHub Actions [run 43684177103](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43684177103) passed all five initial tests using upstream PerceptionLab main.
+
+* 128 × 128 wave field; 740 steps; predicted spacing delay 6.5829 frames, configured D=7.
+* 370 valid evaluated frames in the latter half (overlapping windows, **not** 370 independent experiments).
+* Mean reported delayed advantage **+11.8858 dB** over those frames; final advantage **+4.7431 dB**.
+* Final online MSE: delayed **0.00664636**, simultaneous **0.01981033**.
+* No-delay control advantage **0.0 dB** exactly.
+
+These are simulator-specific readout results, not evidence of learned material or an organism. This receipt predates the workflow-display name correction; the underlying wave and reader were unaffected. The next CI run checks all graph classes and ports.

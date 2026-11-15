@@ -1,0 +1,17 @@
+{
+  "experiment": "001_causal_age",
+  "run_url": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43684177103",
+  "job_id": 132721037315,
+  "head_sha": "b8fbfdf53c2eafc35d479a68ebdc7a5175363ed0",
+  "grid_size": 128,
+  "steps": 740,
+  "expected_delay_frames": 6.582857142857144,
+  "reader_delay_frames": 7,
+  "valid_last_half": 370,
+  "mean_advantage_db": 11.885842754452128,
+  "final_advantage_db": 4.743078072306712,
+  "final_delayed_mse": 0.0066463607598781045,
+  "final_simultaneous_mse": 0.01981033036274325,
+  "max_abs_zero_delay_control_db": 0,
+  "interpretation": "First CI run; overlapping rolling windows; not evidence of medium learning"
+}

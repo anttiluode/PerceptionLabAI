@@ -74,24 +74,14 @@
     },
     {
       "id": 4,
-      "class_name": "SignalDisplayNode",
-      "pos_x": 460,
-      "pos_y": 145,
-      "width": 160,
-      "height": 100,
+      "class_name": "SignalPlotterNode",
+      "pos_x": 455,
+      "pos_y": 125,
+      "width": 310,
+      "height": 250,
       "config": {
-        "node_title": "Delay advantage (dB)"
-      }
-    },
-    {
-      "id": 5,
-      "class_name": "SignalDisplayNode",
-      "pos_x": 460,
-      "pos_y": 265,
-      "width": 160,
-      "height": 100,
-      "config": {
-        "node_title": "Far innovation"
+        "node_title": "Transit: red dB advantage, green innovation, blue lag",
+        "history_size": 500
       }
     }
   ],
@@ -149,14 +139,21 @@
       "from_node_id": 3,
       "from_port": "advantage_db",
       "to_node_id": 4,
-      "to_port": "signal",
+      "to_port": "signal_A (Red)",
       "learned_weight": 1
     },
     {
       "from_node_id": 3,
       "from_port": "innovation",
-      "to_node_id": 5,
-      "to_port": "signal",
+      "to_node_id": 4,
+      "to_port": "signal_B (Green)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 2,
+      "from_port": "mean_abs_lag",
+      "to_node_id": 4,
+      "to_port": "signal_C (Blue)",
       "learned_weight": 1
     }
   ]

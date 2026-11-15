@@ -69,5 +69,34 @@ class TransitTests(unittest.TestCase):
         self.assertNotEqual(tap0,tap1)
         self.assertTrue(all(math.isfinite(x) for x in tap0+tap1))
 
+    def test_workflow_uses_existing_classes_and_real_ports(self):
+        import json
+        wf=json.loads((ROOT/"workflows"/"001_wave_transit_predictor.json").read_text())
+        upstream=ROOT/"PerceptionLab"/"nodes"
+        if not upstream.exists():
+            self.skipTest("Check out upstream under PerceptionLab/")
+        modules={
+            "WaveFieldNode":"wavefieldnode.py",
+            "PulseSourceNode":"pulsesourcenode.py",
+            "TemporalMultiScopeNode":"temporalmultiscopenode.py",
+            "SignalPlotterNode":"signalplotternode.py",
+        }
+        built={}
+        for item in wf["nodes"]:
+            klass=item["class_name"]
+            if klass=="TemporalTransitPredictorNode":
+                C=Reader
+            else:
+                C=load(upstream/modules[klass],klass)
+            built[item["id"]]=C()
+        for edge in wf["edges"]:
+            sender=built[edge["from_node_id"]]
+            receiver=built[edge["to_node_id"]]
+            self.assertIn(edge["from_port"],sender.outputs)
+            self.assertIn(edge["to_port"],receiver.inputs)
+            self.assertEqual(sender.outputs[edge["from_port"]],
+                             receiver.inputs[edge["to_port"]])
+
+
 if __name__=="__main__":
     unittest.main()

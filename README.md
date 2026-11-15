@@ -17,7 +17,7 @@ PerceptionLabAI is a collaborative **staging area** for small, falsifiable Perce
 
 ## Status
 
-Experiment 001: **Causal-age reader** — compare simultaneous and transit-delayed correlation between two apertures of the existing WaveFieldNode, with an explicit no-delay control. See `experiments/001_causal_age/README.md` and `tests/` when added.
+Experiment 001: **Causal-age reader** — compare simultaneous and transit-delayed correlation between two apertures of the existing WaveFieldNode, with an explicit no-delay control. See `experiments/001_causal_age/README.md`, `workflows/`, `nodes/`, and `tests/`.
 
 ## How to contribute
 
