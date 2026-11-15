@@ -384,3 +384,8 @@ if __name__=="__main__":
             "max_abs_wave":v["max_abs_wave"]}
             for k,v in result["modes"].items() if k!="no_input"}}
     print(json.dumps(report,indent=2))
+    # Full machine-readable receipt in CI logs, in addition to the artifact.
+    # This lets us commit the exact tested weights/results without guessing.
+    print("BEGIN_FULL_005_RECEIPT")
+    print(json.dumps(result,indent=2))
+    print("END_FULL_005_RECEIPT")
