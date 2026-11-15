@@ -44,6 +44,7 @@ class PlasticReturnGateNode(BaseNode):
         self.perturbation=.10
         self.learning_rate=.12
         self.resource_cost=.0
+        self.max_update=1.0  # default preserves 006 update rule
         self.learn_enabled=0
         self.signal=0.
         self.effective_weight=self.weight
@@ -64,6 +65,8 @@ class PlasticReturnGateNode(BaseNode):
             if math.isfinite(r) and self.perturbation>1e-7:
                 delta=self.learning_rate*(
                     r/(2.*self.perturbation)-self.resource_cost)
+                limit=max(0.,float(self.max_update))
+                delta=max(-limit,min(limit,delta))
                 before=self.weight
                 self.weight=self._clip(self.weight+delta)
                 self.last_update=self.weight-before
@@ -111,6 +114,7 @@ class PlasticReturnGateNode(BaseNode):
             ("Perturbation","perturbation",self.perturbation,"float"),
             ("Learning rate","learning_rate",self.learning_rate,"float"),
             ("Resource cost","resource_cost",self.resource_cost,"float"),
+            ("Max update per reward","max_update",self.max_update,"float"),
             ("Enable reward updates (1/0)","learn_enabled",self.learn_enabled,None)
         ]
 
@@ -118,6 +122,7 @@ class PlasticReturnGateNode(BaseNode):
         if "weight" in options:self.weight=self._clip(options["weight"])
         for field in ("exploration_direction","perturbation","learning_rate","resource_cost"):
             if field in options:setattr(self,field,float(options[field]))
+        if "max_update" in options:self.max_update=max(0.,float(options["max_update"]))
         if "learn_enabled" in options:self.learn_enabled=int(float(options["learn_enabled"]))
         self.effective_weight=self._clip(self.weight+
             self.exploration_direction*self.perturbation)
