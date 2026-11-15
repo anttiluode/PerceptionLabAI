@@ -1,0 +1,135 @@
+{
+  "experiment": "004_long_horizon",
+  "steps": 1800,
+  "cases": {
+    "weak_0.30": {
+      "quarter_spikes": {
+        "A": [
+          4,
+          4,
+          4,
+          3
+        ],
+        "B": [
+          3,
+          4,
+          4,
+          4
+        ]
+      },
+      "period_A": 118,
+      "period_B": 118,
+      "phase_R": 1,
+      "interleaving": 1,
+      "clip_frames": 0
+    },
+    "weak_0.45": {
+      "quarter_spikes": {
+        "A": [
+          6,
+          5,
+          4,
+          5
+        ],
+        "B": [
+          4,
+          4,
+          5,
+          5
+        ]
+      },
+      "period_A": 96.75,
+      "period_B": 96.6667,
+      "phase_R": 0.99958,
+      "interleaving": 1,
+      "clip_frames": 0
+    },
+    "strong_0.50": {
+      "quarter_spikes": {
+        "A": [
+          17,
+          19,
+          19,
+          18
+        ],
+        "B": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "period_A": 24,
+      "period_B": null,
+      "phase_R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "weak_0.30_without_B_return": {
+      "quarter_spikes": {
+        "A": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "B": [
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "period_A": null,
+      "period_B": null,
+      "phase_R": null,
+      "interleaving": null,
+      "clip_frames": 0
+    },
+    "weak_0.30_swap_decay": {
+      "quarter_spikes": {
+        "A": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "B": [
+          6,
+          5,
+          6,
+          5
+        ]
+      },
+      "period_A": null,
+      "period_B": 81,
+      "phase_R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "weak_0.30_swap_sites": {
+      "quarter_spikes": {
+        "A": [
+          6,
+          6,
+          7,
+          6
+        ],
+        "B": [
+          6,
+          6,
+          6,
+          7
+        ]
+      },
+      "period_A": 70,
+      "period_B": 70,
+      "phase_R": 1,
+      "interleaving": 1,
+      "clip_frames": 0
+    }
+  },
+  "source_run": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43692611309",
+  "source_commit": "0afd4d90f6a767c60ecb5b8c978b29dae04b365c",
+  "note": "1800-frame deterministic headless run of actual upstream WaveField, using 004 saved graph geometry. This summary includes per-quarter counts; full spike rasters are archived in the CI JSON artifact."
+}
