@@ -72,3 +72,16 @@ No new node was required for 004. It uses two instances of **FadingHistorySpikeN
 ## 004 confirmed two-node behaviour
 
 [Long-run receipt](../results/004_two_histories_long.json): two identical FadingHistorySpikeNode classes with **different** decays (A 0.86; B 0.95) and one common WaveField exhibited two distinct operating regimes. With A's feedback weight 1.0, B was permanently armed and above release threshold (B=0 spikes). With A feedback 0.30 and B feedback 1.0, both kept firing through 1,800 frames in an alternating, phase-locked sequence; the no-B-return control extinguished activity in both. At A weight 0.50, A dominated and B was silent. No new node class, neural learning, or biological equivalence is inferred.
+
+## 005 — PopulationOrderReadoutNode (workshop only)
+
+Source: [population_order_readout_node.py](../nodes/population_order_readout_node.py).
+
+**Inputs:** `trace_0`, `trace_1`, `trace_2`, `spike_0`, `spike_1`, `spike_2` (all scalar signals). **Outputs:** `score`, `decision`, `ready`, `spike_memory_0..2` (signals). It has **no teacher/label input** and **no output returning to the physical field**.
+
+The instrument computes an EMA (decay configurable, initially 0.92) of each spike input. It then computes a frozen linear score from three contemporaneous unit traces and three readout spike-memory values. Positive means AB, negative BA. All six weights initially equal zero, so **`ready=0` and no classification is claimed** until independent held-out training supplies a model. This readout has *its own* fading memory, which must be distinguished from retention in the three causal units.
+
+Controls: `spike_decay`, `start_frame`, `bias`, `w0..w5`; changing a graph's decoder weights is not training the WaveField or the feedback units. A classifier trained from a particular time snapshot is not validated for other times.
+
+**005 uses no new causal neuron.** It reuses three copies of FadingHistorySpikeNode with different decay constants (0.86/0.95/0.975), with two ordinary PulseSourceNodes delivering AB or BA via write_0 and write_3. See [005 experiment and controls](../experiments/005_order_of_falls/README.md).
+

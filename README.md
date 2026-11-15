@@ -1,5 +1,12 @@
 # PerceptionLabAI — the experimental workshop
 
+## Current experiment 005 · Order of falls
+
+[**005 research dossier**](experiments/005_order_of_falls/README.md) · [AB graph](workflows/005_AB_three_histories.json) · [BA graph](workflows/005_BA_three_histories.json) · [Node Manual](docs/NODE_MANUAL.md) · [Workflow Manual](docs/WORKFLOW_MANUAL.md).
+
+Two equal pulses arrive at two physical locations in reversed order (AB versus BA). Three heterogeneous fading-history units exchange activity through a **single original PerceptionLab WaveField**. A fourth node has no teaching signal and no output to the physical field; an offline linear probe is trained solely on training trials, then tested on held-out timing/amplitude perturbations. Passive-field and third-unit-return-disconnected controls are required. **This is a study of readable event-order history, not a claim of learned neural representations.**
+
+---
 **Start here:** [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md) · [004 experiment](experiments/004_two_histories/README.md) · [004 measured receipt](results/004_two_histories_initial.json)
 
 **004 completed headless investigation:** Two differently fading units in one shared WaveField switch between **suppression** (A feedback ≥0.50, B silent) and **mutual alternating regeneration** (A feedback 0.15–0.45). In a 1,800-frame run, A-return 0.30 gave repeated A/B alternation (15 spikes each), and disconnecting B's return killed both. This is a controlled dynamical phenomenon, not learned behaviour. **The 004 GUI still needs local verification.**

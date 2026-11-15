@@ -81,3 +81,23 @@ Open the [004 experiment dossier](../experiments/004_two_histories/README.md) be
 [Competition (A return 1.0)](../workflows/004_two_fades_one_field.json) versus [alternation (A return 0.25)](../workflows/004_weak_a_interleaving.json) versus [weak A, B disconnected](../workflows/004_weak_a_without_b_return.json). All three use the same 96×96 wave physics and independently calibrated thresholds, so only edge strength/connectivity differs. A and B are **two instances of the same node class**, not two different handcrafted algorithms.
 
 The 650-step [gain sweep](../results/004_two_histories_gain_sweep.json) showed alternating A/B event sequences at A-return weights 0.15–0.45 and suppression of B from 0.50 upward. The [1,800-step check](../results/004_two_histories_long.json) preserved both regimes, including a successful site-swap alternation and a reversed decay-rate winner. Both returns are necessary for the weak-A cycle: the B-return-off control dies. Headless verification used the original upstream WaveField; 004 GUI playback is still a separate check.
+
+## 005 — Does the *order of past stimuli* survive in future activity?
+
+[005 main AB graph](../workflows/005_AB_three_histories.json) · [005 main BA graph](../workflows/005_BA_three_histories.json) · [005 dossier](../experiments/005_order_of_falls/README.md).
+
+Seven GUI-loadable graphs, all in `workflows/`:
+
+| Variant | AB | BA | What it changes |
+|---|---|---|---|
+| Three recurrent fading units | [AB](../workflows/005_AB_three_histories.json) | [BA](../workflows/005_BA_three_histories.json) | Exactly one A pulse and one B pulse; order swapped |
+| All pulse returns unplugged | [AB](../workflows/005_AB_no_return.json) | [BA](../workflows/005_BA_no_return.json) | Passive WaveField order-retention control |
+| Slow C return unplugged | [AB](../workflows/005_AB_slow_disconnected.json) | [BA](../workflows/005_BA_slow_disconnected.json) | Does the third active unit matter? |
+| No source pulse | [Silent](../workflows/005_no_stimulus.json) | — | Non-spontaneous-activity control |
+
+**Crucial distinction:** AB/BA are not different graphs internally except the two source warmups, which are swapped. Per paired trial they contain identical source amplitudes, sites, durations, gap and energy. The runner perturbs timing and amplitudes identically within each AB/BA pair, freezes thresholds from a pooled open-loop calibration, trains an external linear readout on 8 matched pairs, and tests on **8 unseen pairs**. Snapshots: 160, 240, 360, 520 and 650 frames. The passive no-return control must be compared to any apparent order retention. No source labels enter the readout.
+
+The fourth `PopulationOrderReadoutNode` initially has **zero weights**; a GUI display is not a trained classification until a validated model is installed. Calibrated thresholds and any justified frozen decoder coefficients should be copied to both AB/BA GUI graphs from the measured run. The PerceptionLab GUI has not yet been verified for 005.
+
+To run: `python experiments/005_order_of_falls/run.py --upstream PerceptionLab` from PerceptionLabAI, using the sibling host checkout if needed. Copy `nodes/population_order_readout_node.py` (and `nodes/fading_history_spike_node.py`) into the host `nodes/` folder and restart. [Node manual](NODE_MANUAL.md).
+

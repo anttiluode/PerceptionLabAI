@@ -64,7 +64,7 @@ offline linear readout is the only trained component.
 
 ## Reproduce
 
-\`\`\`bat
+```bat
 cd /d D:\anttiluode\PerceptionLabAI
 git pull origin main
 cd /d D:\anttiluode\PerceptionLab
@@ -75,13 +75,13 @@ copy /Y nodes\population_order_readout_node.py ..\PerceptionLab\nodes\
 python -m pip install numpy opencv-python-headless
 python -m unittest discover -s tests -p test_005_order_of_falls.py -v
 python experiments\005_order_of_falls\run.py --upstream ..\PerceptionLab
-\`\`\`
+```
 
-**GUI graphs** in \`workflows/\`:
-- \`005_AB_three_histories.json\` / \`005_BA_three_histories.json\`
-- \`005_AB_no_return.json\` / \`005_BA_no_return.json\`
-- \`005_AB_slow_disconnected.json\` / \`005_BA_slow_disconnected.json\`
-- \`005_no_stimulus.json\`
+**GUI graphs** in `workflows/`:
+- `005_AB_three_histories.json` / `005_BA_three_histories.json`
+- `005_AB_no_return.json` / `005_BA_no_return.json`
+- `005_AB_slow_disconnected.json` / `005_BA_slow_disconnected.json`
+- `005_no_stimulus.json`
 
 **Before the first CI measurement:** all fading thresholds are provisional
 and the readout is untrained; the GUI graphs are useful for wiring inspection,
