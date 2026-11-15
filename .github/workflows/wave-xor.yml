@@ -1,0 +1,25 @@
+name: Experiment 002 physical-to-logic timing
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  timing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -v
+      - run: python experiments/002_wave_xor/run.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wave-xor-measurements
+          path: results/002_wave_xor.json
