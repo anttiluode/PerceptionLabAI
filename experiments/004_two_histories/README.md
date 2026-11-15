@@ -1,5 +1,45 @@
 # 004 — Two fading histories in one propagating field
 
+## Latest result — two regimes in the same shared medium
+
+**Recorded on 15 November 2026:** [full 650-frame gain sweep](../../results/004_two_histories_gain_sweep.json) · [1,800-frame long-run receipt](../../results/004_two_histories_long.json) · [long-run CI](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43692611309).
+
+The decisive intervention was to weaken **only A's feedback into the shared wave**. The slow unit B had remained armed and *above its release threshold 100% of the late period* under full-strength A feedback, explaining its lack of firing in the strong-A condition.
+
+| A return weight | Behaviour over 650 frames | B late activity |
+|---|---|---|
+| 1.00 | A=21 spikes, B=0 | Fully suppressed |
+| 0.50 | A=25, B=0 | Fully suppressed |
+| 0.45 | A=8, B=6 | Alternating events |
+| 0.30 | A=6, B=5 | Alternating events |
+| 0.25 | A=5, B=5 | Alternating events |
+| 0.15 | A=5, B=5 | Alternating events |
+
+**Causal controls:** Cutting A's return halfway allows B to resume firing (B=2). At weak A return (0.25 or 0.30), removing B's return makes **both** lose recurrence after the initial stimulus. Thus in the measured regime B's contributions are essential for A's continuing activity, whereas with strong A feedback B is suppressed.
+
+**Longer 1,800-frame confirmation** (single deterministic configuration, one shared 96×96 field):
+
+| Case | A quarter counts | B quarter counts | Late period |
+|---|---|---|---|
+| A return 0.30 | 4, 4, 4, 3 | 3, 4, 4, 4 | both 118 frames |
+| A return 0.45 | 6, 5, 4, 5 | 4, 4, 5, 5 | both ~96.7 frames |
+| A return 0.50 | 17, 19, 19, 18 | 0, 0, 0, 0 | A 24 frames |
+| A return 0.30; B return disconnected | 1, 0, 0, 0 | 1, 0, 0, 0 | recurrence dies |
+| A return 0.30, spatial sites swapped | 6, 6, 7, 6 | 6, 6, 6, 7 | both 70 frames |
+| A return 0.30, decay rates swapped | 0, 0, 0, 0 | 6, 5, 6, 5 | B 81 frames |
+
+All long-run cases had **zero wave-amplitude clipping frames**. The weak 0.30 and 0.45 conditions showed late interleaving fraction **1.0** and phase-concentration R nearly 1.0. These are deterministic locked event sequences, not learning or stable coordination under noise or varying stimuli.
+
+**Load and compare in the real GUI:**
+[004 full-strength competition](../../workflows/004_two_fades_one_field.json) ·
+[004 weak-A alternating condition](../../workflows/004_weak_a_interleaving.json) ·
+[004 weak-A without B return](../../workflows/004_weak_a_without_b_return.json).
+The baseline A and B weights are 1.0; the weak A workflow changes A->WaveField return weight to **0.25** while leaving B's weight at 1.0. It uses the **same measured node thresholds**, wave size, source and rates. This makes the comparison directly controllable by loading different graphs. **Interactive GUI playback of 004 has not been independently observed yet.**
+
+The mechanism is conventional wave propagation plus a thresholded leaky trace in a regenerative loop. The novelty here is an explicitly controlled demonstration in our compositional node laboratory that **asymmetric feedback strength shifts the same network from suppression to mutual regeneration**. Remaining checks: perturbation recovery, different stimulus strengths, boundary conditions, and whether a genuinely different input sequence can leave accessible information beyond periodic phase.
+
+---
+
 **Question (preregistered November 15, 2026):** Can two state-dependent,
 fade-triggered units influence each other's spike timing through **one shared
 WaveField**, and do rate and geometry swaps alter their temporal relation?

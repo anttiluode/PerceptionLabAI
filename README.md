@@ -2,7 +2,7 @@
 
 **Start here:** [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md) · [004 experiment](experiments/004_two_histories/README.md) · [004 measured receipt](results/004_two_histories_initial.json)
 
-**004 first result:** Two differing fading-history nodes share a single wave field. With both connected, fast A fired 21 times and slow B zero, while B alone fired four times. Swapping their fading rates reversed the active unit. This is a negative result for initial alternation and a candidate for history-dependent suppression; follow-up state/readout interventions are in progress. All seven 004 GUI graphs now have measured calibration thresholds, and nothing is yet claimed about their actual GUI run.
+**004 completed headless investigation:** Two differently fading units in one shared WaveField switch between **suppression** (A feedback ≥0.50, B silent) and **mutual alternating regeneration** (A feedback 0.15–0.45). In a 1,800-frame run, A-return 0.30 gave repeated A/B alternation (15 spikes each), and disconnecting B's return killed both. This is a controlled dynamical phenomenon, not learned behaviour. **The 004 GUI still needs local verification.**
 
 ---
 ## Experiment 003 — CURRENT WORKFLOW (PerceptionLabAI/main)

@@ -68,3 +68,7 @@ See [Workflow Manual](WORKFLOW_MANUAL.md) and
 ## 004: same node class, different histories
 
 No new node was required for 004. It uses two instances of **FadingHistorySpikeNode** with decay rates 0.86 and 0.95, independent thresholds and separate physical read/write sites in one WaveField. The initial tests showed fast A=21 spikes and slow B=0 when coupled, although slow B produced four when isolated. Rate-swapping reversed the active identity. This could be **activity-dependent suppression**: A's recurring input may hold B's trace above its release threshold. The new intervention measures B's trace and removes A's return. [004 dossier](../experiments/004_two_histories/README.md) and [first results](../results/004_two_histories_initial.json). Avoid claiming phase locking when one node is silent.
+
+## 004 confirmed two-node behaviour
+
+[Long-run receipt](../results/004_two_histories_long.json): two identical FadingHistorySpikeNode classes with **different** decays (A 0.86; B 0.95) and one common WaveField exhibited two distinct operating regimes. With A's feedback weight 1.0, B was permanently armed and above release threshold (B=0 spikes). With A feedback 0.30 and B feedback 1.0, both kept firing through 1,800 frames in an alternating, phase-locked sequence; the no-B-return control extinguished activity in both. At A weight 0.50, A dominated and B was silent. No new node class, neural learning, or biological equivalence is inferred.

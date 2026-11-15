@@ -12,7 +12,7 @@ reusable graphs should be proposed upstream.
 | 001 | [Wave transit predictor](../workflows/001_wave_transit_predictor.json) | `TemporalTransitPredictorNode` | Does delayed near-field input predict the far aperture better than simultaneous input? | 6 tests passed, +11.89 dB headless rolling advantage; [dossier](../experiments/001_causal_age/README.md) |
 | 002 | [Wave → XOR](../workflows/002_wavefield_resonator_xor.json) | `WaveArrivalGateNode` | Does physical travel time shift the coincident XOR window? | −5 and −10 frame compensation on doubled path; [dossier](../experiments/002_wave_xor/README.md) |
 | 003 | [Self-regenerating fade loop](../workflows/003_fading_feedback_wave.json) | `FadingHistorySpikeNode` | Does a pulse fired at the end of a fading history regenerate activity through the wave? | GUI verified after size repair, recurrence requires feedback; [dossier](../experiments/003_fade_closed_loop/README.md) |
-| 004 | [Two fades, one field](../workflows/004_two_fades_one_field.json) | Reuses `FadingHistorySpikeNode` twice | Can two different histories influence each other's timing? | **First result: A suppresses B; 004 follow-up tests ongoing**: [004](../experiments/004_two_histories/README.md) |
+| 004 | [Two fades, one field](../workflows/004_two_fades_one_field.json) | Reuses `FadingHistorySpikeNode` twice | Can two different histories influence each other's timing? | **Two tested regimes: suppression at A=0.50+, alternating mutual regeneration at A=0.15–0.45**: [004](../experiments/004_two_histories/README.md) |
 
 004 controls available as GUI-loadable graphs:
 [ A alone ](../workflows/004_a_only.json),
@@ -75,3 +75,9 @@ The new [two-fade shared field workflow](../workflows/004_two_fades_one_field.js
 The [first 650-frame receipt](../results/004_two_histories_initial.json) reports A=21 spikes and B=0 when both are connected, while B alone produced four spikes. Rate-swapping reversed which node was active; position-swapping did not in the separately calibrated runs. This is **not** a demonstrated two-unit lock or alternation. We are testing B's state and the effect of cutting A's feedback.
 
 Open the [004 experiment dossier](../experiments/004_two_histories/README.md) before using a variant. The GUI hasn't been verified for 004.
+
+## 004's decisive GUI comparison
+
+[Competition (A return 1.0)](../workflows/004_two_fades_one_field.json) versus [alternation (A return 0.25)](../workflows/004_weak_a_interleaving.json) versus [weak A, B disconnected](../workflows/004_weak_a_without_b_return.json). All three use the same 96×96 wave physics and independently calibrated thresholds, so only edge strength/connectivity differs. A and B are **two instances of the same node class**, not two different handcrafted algorithms.
+
+The 650-step [gain sweep](../results/004_two_histories_gain_sweep.json) showed alternating A/B event sequences at A-return weights 0.15–0.45 and suppression of B from 0.50 upward. The [1,800-step check](../results/004_two_histories_long.json) preserved both regimes, including a successful site-swap alternation and a reversed decay-rate winner. Both returns are necessary for the weak-A cycle: the B-return-off control dies. Headless verification used the original upstream WaveField; 004 GUI playback is still a separate check.
