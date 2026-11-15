@@ -68,6 +68,22 @@ class Test004(unittest.TestCase):
         self.assertEqual(r["total_spikes"],{"A":0,"B":0})
         self.assertEqual(r["energy"]["max_abs_field"],0)
 
+    def test_measured_calibration_and_weak_feedback_graphs(self):
+        base=json.loads((ROOT/"workflows"/"004_two_fades_one_field.json").read_text())
+        weak=json.loads((ROOT/"workflows"/"004_weak_a_interleaving.json").read_text())
+        isol=json.loads((ROOT/"workflows"/"004_weak_a_without_b_return.json").read_text())
+        cfg={n["id"]:n["config"] for n in base["nodes"]}
+        self.assertAlmostEqual(cfg[2]["arm_threshold"],.10849628199708476)
+        self.assertAlmostEqual(cfg[3]["release_threshold"],.014892811355301766)
+        def returns(g):
+            return {e["from_node_id"]:e["learned_weight"] for e in g["edges"]
+                    if e["to_node_id"]==1 and e["from_port"]=="pulse"}
+        self.assertEqual(returns(base),{2:1,3:1})
+        self.assertEqual(returns(weak),{2:.25,3:1})
+        self.assertEqual(returns(isol),{2:.25})
+        for g in (weak,isol):
+            self.assertEqual(g["nodes"][1]["config"]["size"],96)
+
     def test_single_shot_bootstrap_and_two_returns(self):
         g=json.loads((ROOT/"workflows"/"004_two_fades_one_field.json").read_text())
         source=next(n for n in g["nodes"] if n["id"]==0)["config"]
