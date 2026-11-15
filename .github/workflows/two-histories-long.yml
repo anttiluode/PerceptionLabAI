@@ -1,0 +1,26 @@
+name: 004 long-horizon mutual-regeneration check
+on:
+  push:
+    paths:
+      - "experiments/004_two_histories/long_run.py"
+      - ".github/workflows/two-histories-long.yml"
+  workflow_dispatch:
+jobs:
+  long_run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python experiments/004_two_histories/long_run.py --upstream PerceptionLab --steps 1800
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 004-long-horizon
+          path: results/004_two_histories_long.json
