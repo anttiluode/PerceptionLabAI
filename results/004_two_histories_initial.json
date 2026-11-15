@@ -1,0 +1,328 @@
+{
+  "experiment": "004_two_histories",
+  "calibration": {
+    "coupled": {
+      "trace_peaks": {
+        "2": 0.24110284888241057,
+        "3": 0.07446405677650883
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.10849628199708476,
+          "release_threshold": 0.04822056977648212
+        },
+        "3": {
+          "arm_threshold": 0.033508825549428974,
+          "release_threshold": 0.014892811355301766
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          54
+        ],
+        "3": [
+          136
+        ]
+      }
+    },
+    "a_only": {
+      "trace_peaks": {
+        "2": 0.24110284888241057,
+        "3": 0.07446405677650883
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.10849628199708476,
+          "release_threshold": 0.04822056977648212
+        },
+        "3": {
+          "arm_threshold": 0.033508825549428974,
+          "release_threshold": 0.014892811355301766
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          54
+        ],
+        "3": [
+          136
+        ]
+      }
+    },
+    "b_only": {
+      "trace_peaks": {
+        "2": 0.24110284888241057,
+        "3": 0.07446405677650883
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.10849628199708476,
+          "release_threshold": 0.04822056977648212
+        },
+        "3": {
+          "arm_threshold": 0.033508825549428974,
+          "release_threshold": 0.014892811355301766
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          54
+        ],
+        "3": [
+          136
+        ]
+      }
+    },
+    "no_return": {
+      "trace_peaks": {
+        "2": 0.24110284888241057,
+        "3": 0.07446405677650883
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.10849628199708476,
+          "release_threshold": 0.04822056977648212
+        },
+        "3": {
+          "arm_threshold": 0.033508825549428974,
+          "release_threshold": 0.014892811355301766
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          54
+        ],
+        "3": [
+          136
+        ]
+      }
+    },
+    "no_seed": {
+      "trace_peaks": {
+        "2": 0.24110284888241057,
+        "3": 0.07446405677650883
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.10849628199708476,
+          "release_threshold": 0.04822056977648212
+        },
+        "3": {
+          "arm_threshold": 0.033508825549428974,
+          "release_threshold": 0.014892811355301766
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          54
+        ],
+        "3": [
+          136
+        ]
+      }
+    },
+    "swap_decay": {
+      "trace_peaks": {
+        "2": 0.13104135101065464,
+        "3": 0.13250131544518412
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.05896860795479459,
+          "release_threshold": 0.02620827020213093
+        },
+        "3": {
+          "arm_threshold": 0.05962559195033285,
+          "release_threshold": 0.026500263089036826
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          92
+        ],
+        "3": [
+          100
+        ]
+      }
+    },
+    "swap_sites": {
+      "trace_peaks": {
+        "2": 0.13250131544518412,
+        "3": 0.13104135101065464
+      },
+      "thresholds": {
+        "2": {
+          "arm_threshold": 0.05962559195033285,
+          "release_threshold": 0.026500263089036826
+        },
+        "3": {
+          "arm_threshold": 0.05896860795479459,
+          "release_threshold": 0.02620827020213093
+        }
+      },
+      "open_loop_first_spikes": {
+        "2": [
+          61
+        ],
+        "3": [
+          108
+        ]
+      }
+    }
+  },
+  "cases": {
+    "coupled": {
+      "total": {
+        "A": 21,
+        "B": 0
+      },
+      "late": {
+        "A": 11,
+        "B": 0
+      },
+      "period_A": 29,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "a_only": {
+      "total": {
+        "A": 21,
+        "B": 0
+      },
+      "late": {
+        "A": 11,
+        "B": 0
+      },
+      "period_A": 29,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "b_only": {
+      "total": {
+        "A": 0,
+        "B": 4
+      },
+      "late": {
+        "A": 0,
+        "B": 2
+      },
+      "period_A": null,
+      "period_B": 154,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "no_return": {
+      "total": {
+        "A": 1,
+        "B": 1
+      },
+      "late": {
+        "A": 0,
+        "B": 0
+      },
+      "period_A": null,
+      "period_B": null,
+      "R": null,
+      "interleaving": null,
+      "clip_frames": 0
+    },
+    "no_seed": {
+      "total": {
+        "A": 0,
+        "B": 0
+      },
+      "late": {
+        "A": 0,
+        "B": 0
+      },
+      "period_A": null,
+      "period_B": null,
+      "R": null,
+      "interleaving": null,
+      "clip_frames": 0
+    },
+    "swap_decay": {
+      "total": {
+        "A": 0,
+        "B": 8
+      },
+      "late": {
+        "A": 0,
+        "B": 4
+      },
+      "period_A": null,
+      "period_B": 81,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "swap_sites": {
+      "total": {
+        "A": 8,
+        "B": 0
+      },
+      "late": {
+        "A": 4,
+        "B": 0
+      },
+      "period_A": 81,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "swap_decay_frozen": {
+      "total": {
+        "A": 10,
+        "B": 2
+      },
+      "late": {
+        "A": 5,
+        "B": 1
+      },
+      "period_A": 62.25,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0.4,
+      "clip_frames": 0
+    },
+    "swap_sites_frozen": {
+      "total": {
+        "A": 20,
+        "B": 0
+      },
+      "late": {
+        "A": 11,
+        "B": 0
+      },
+      "period_A": 31,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    },
+    "cut_b_midrun": {
+      "total": {
+        "A": 21,
+        "B": 0
+      },
+      "late": {
+        "A": 11,
+        "B": 0
+      },
+      "period_A": 29,
+      "period_B": null,
+      "R": null,
+      "interleaving": 0,
+      "clip_frames": 0
+    }
+  },
+  "source_run": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43691739662",
+  "source_commit": "f7d31eb467c6b1f23013419dc4dd41cc2f62fbe2",
+  "note": "Initial 650-frame deterministic 004 sweep. Six tests passed. Full time series retained in CI artifact; summary and calibration transcribed from CI output. Follow-up cut-A and amplitude experiments pending."
+}
