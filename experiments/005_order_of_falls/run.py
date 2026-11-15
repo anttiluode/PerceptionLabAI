@@ -119,6 +119,8 @@ def simulate(graph,upstream,steps=TRIAL_STEPS,
     active={i:obj[i] for i in range(7)}  # two stimuli, one wave, three fades, probe
     edges=[e for e in graph["edges"] if e["to_node_id"] in active]
     captures={}
+    probe_scores={}
+    probe_ready={}
     traces={i:[] for i in NODE_IDS}
     pulses={i:[] for i in NODE_IDS}
     trace_peaks={str(i):0.0 for i in NODE_IDS}
@@ -160,8 +162,12 @@ def simulate(graph,upstream,steps=TRIAL_STEPS,
         peak_energy=max(peak_energy,float(obj[2].energy_value))
         if tick in SNAPSHOTS:
             captures[tick]=[float(v) for v in obj[6].features]
+            probe_scores[tick]=float(obj[6].get_output("score"))
+            probe_ready[tick]=float(obj[6].get_output("ready"))
     return {
         "features":captures,
+        "probe_scores":probe_scores,
+        "probe_ready":probe_ready,
         "trace_peaks":trace_peaks,
         "spikes":{str(i):pulses[i] for i in NODE_IDS},
         "max_abs_field":round(maxfield,7),
