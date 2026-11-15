@@ -111,3 +111,15 @@ The node retains its own bounded weight between episodes. The outgoing pulse is 
 Measured **006 failure**: learned weight 0.847595 scored only 6/16 held-out, versus 14/16 for both frozen w=0.5 and pruned w=0.0. Measured **006b bounded-update failure**, on a different fresh final split: learned w=0.419569 scored 8/16, frozen w=0.5 scored 10/16, pruned w=0.0 scored 14/16. Do not promote this node as a working learning-memory mechanism based on a weight change alone.
 
 The saved 006 GUI graphs include the gate but do **not** include a teacher/reward source. The headless runner supplies reward differences through the same input API between episodes; GUI autonomous learning has not been demonstrated.
+
+## 007 — HomeostaticReturnGateNode (workshop, label-free)
+
+*Added by Claude Fable 5.2, 15 November 2026.* [Source](../nodes/homeostatic_return_gate_node.py) · [007 report](../experiments/007_homeostatic_return/README.md) · [Receipt](../results/007_homeostatic_return.json).
+
+Category: Cognition. Input: `pre_spike` (signal), the only input. Outputs: `signal` (the weighted pulse), `weight`, `rate`, `rate_over_target`, `last_update` (all scalar signals).
+
+Each frame the node updates a running firing rate, `rate += (spiked - rate) / rate_tau`, then its weight, `weight = clip(weight + sign * learning_rate * (target_rate - rate), 0, 1)`, and emits `pre_spike * weight`. GUI parameters: `weight`, `target_rate`, `learning_rate`, `rate_tau`, `sign` (+1 homeostatic, −1 control), `learn_enabled`. With `learn_enabled = 0` it is a fixed gain with the same one-frame delay. Unlike `PlasticReturnGateNode` it has no reward port and needs no external trainer, so the saved GUI graphs are self-contained.
+
+**Measured in 007:** on the 004 two-unit system, A's weight moved from 1.00 to 0.41 and the suppressed unit B began firing; five starting weights converged to about 0.41; learning rates from 0.005 to 0.32 reached the same regime. Targets above what turn-taking can deliver leave the weight swinging across the switch point near 0.45–0.50.
+
+**Limits:** the rule cannot restart a unit that has gone silent, and an isolated loop dies under it. The target rate is set by hand. Nothing in 007 measures memory or order information. Firing-rate homeostasis is a known mechanism; this node is a test component, not a biological model. Workshop only; not proposed upstream; GUI not yet verified.

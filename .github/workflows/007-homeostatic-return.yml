@@ -1,0 +1,30 @@
+name: 007 homeostatic return
+on:
+  push:
+    paths:
+      - "experiments/007_homeostatic_return/**"
+      - "nodes/homeostatic_return_gate_node.py"
+      - "workflows/007_*.json"
+      - "tests/test_007_homeostatic_return.py"
+      - ".github/workflows/007-homeostatic-return.yml"
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -p test_007_homeostatic_return.py -v
+      - run: python experiments/007_homeostatic_return/run.py --upstream PerceptionLab --out results/007_ci_rerun.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 007-homeostatic-return
+          path: results/007_ci_rerun.json

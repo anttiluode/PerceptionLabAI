@@ -13,6 +13,7 @@ reusable graphs should be proposed upstream.
 | 002 | [Wave → XOR](../workflows/002_wavefield_resonator_xor.json) | `WaveArrivalGateNode` | Does physical travel time shift the coincident XOR window? | −5 and −10 frame compensation on doubled path; [dossier](../experiments/002_wave_xor/README.md) |
 | 003 | [Self-regenerating fade loop](../workflows/003_fading_feedback_wave.json) | `FadingHistorySpikeNode` | Does a pulse fired at the end of a fading history regenerate activity through the wave? | GUI verified after size repair, recurrence requires feedback; [dossier](../experiments/003_fade_closed_loop/README.md) |
 | 004 | [Two fades, one field](../workflows/004_two_fades_one_field.json) | Reuses `FadingHistorySpikeNode` twice | Can two different histories influence each other's timing? | **Two tested regimes: suppression at A=0.50+, alternating mutual regeneration at A=0.15–0.45**: [004](../experiments/004_two_histories/README.md) |
+| 007 | [Homeostatic A return](../workflows/007_homeostatic_a_return.json) | `HomeostaticReturnGateNode` | Can a return edge reach the turn-taking regime using only its own unit's firing rate? | **Yes from five starting weights: 1.00 → 0.41, B rescued, alternation at ~104 frames; an isolated loop dies**: [007](../experiments/007_homeostatic_return/README.md) |
 
 004 controls available as GUI-loadable graphs:
 [ A alone ](../workflows/004_a_only.json),
@@ -132,3 +133,19 @@ The two pulses are again equal in amplitude and width and occupy the same two ti
 **Exploratory 006b:** a smaller learning rate and maximum update 0.05, averaged over two contexts per step. On an entirely new final split, the learned w=0.419569 gave **8/16**, fixed 0.5 gave **10/16**, and completely pruned 0 gave **14/16**. The more conservative rule still failed to generalize usefully. [006b report](../experiments/006b_bounded_selection/README.md) · [Receipt](../results/006b_bounded_selection.json) · [Passing CI](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43698479884).
 
 **Manual use:** copy `plastic_return_gate_node.py`, `population_order_readout_node.py`, and `fading_history_spike_node.py` from workshop `nodes/` into upstream PerceptionLab `nodes/`, restart, and load the JSON from workshop `workflows/`. The GUI graph has no reward-producing teacher wired in, so the saved version is an observable but **not self-training** demonstration. Both reported results come from tested headless replays of the real upstream wave and node classes, not from an interactive GUI session.
+
+## 007 — Homeostatic return: a label-free rule finds the turn-taking regime
+
+*Added by Claude Fable 5.2, 15 November 2026.* [Report](../experiments/007_homeostatic_return/README.md) · [Receipt](../results/007_homeostatic_return.json).
+
+All five graphs are the measured 004 system (same field, source, units and thresholds) with A's return routed through a `HomeostaticReturnGateNode`. Every comparison uses the same gate and its one-frame delay.
+
+- [Primary: homeostatic A return](../workflows/007_homeostatic_a_return.json) — weight starts at 1.00, target 0.010 pulses/frame, learning rate 0.02, rate window 200. Headless: weight reaches 0.41, B fires from about frame 1,500, strict alternation at about 104 frames.
+- [Frozen gate at 1.00](../workflows/007_frozen_gate_full.json) — learning off. A alone at 29 frames, B silent.
+- [Homeostatic A, B return unplugged](../workflows/007_homeostatic_a_no_b_return.json) — the loop dies near frame 1,500 and does not restart.
+- [Both returns homeostatic](../workflows/007_both_homeostatic.json) — same outcome as the primary; B's weight stays at 1.00.
+- [Anti-homeostatic control from 0.30](../workflows/007_anti_homeostatic_a.json) — sign flipped. **Uninformative as designed:** the weight drifts to 0.04 and turn-taking continues, because every weight from 0.00 to 0.45 takes turns.
+
+Runner-only variants (fixed-weight sweep, other starting weights, targets, learning rates and rate windows, plus labelled post-hoc checks) are in the receipt.
+
+**Manual use:** copy `homeostatic_return_gate_node.py` and `fading_history_spike_node.py` from workshop `nodes/` into upstream PerceptionLab `nodes/`, restart, load a `007_*.json`. The extra plotter shows A's weight and A's rate over target; that plotter draws its "Red" input in blue. **No 007 graph has been run in the GUI yet.**
