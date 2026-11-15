@@ -1,0 +1,27 @@
+name: 005b three-active heldout order
+on:
+  push:
+    paths:
+      - "experiments/005_order_of_falls/three_active.py"
+      - ".github/workflows/005b-three-active.yml"
+  workflow_dispatch:
+jobs:
+  heldout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python experiments/005_order_of_falls/three_active.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 005b-three-active-heldout
+          path: results/005b_three_active_heldout.json
