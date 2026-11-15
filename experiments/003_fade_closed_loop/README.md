@@ -120,3 +120,29 @@ the number of frames in which `abs(field)` reaches 3.9998.
 If the low-amplitude loop still oscillates while showing zero
 saturated frames, the mechanism is not dependent on the WaveField
 amplitude clamp. If it fails, keep the negative result.
+
+## Critical GUI loader discrepancy and fix
+
+**User-observed failure:** the local PerceptionLab GUI graph fired once and
+died, while the headless graph continued firing.
+
+Cause found in source: PerceptionLab constructs `WaveFieldNode()` at 256×256,
+then applies saved `size:96` via `set_config_options`. The original
+method skipped the size key, so the actual field/velocity arrays and aperture
+geometry **stayed 256×256** while the nominal `size` attribute changed to 96.
+Thresholds calibrated for an actual 96×96 field were invalid.
+
+**Fix proposed upstream:** [PerceptionLab PR #4](https://github.com/anttiluode/PerceptionLab/pull/4),
+making size changes correctly reallocate state and rebuild geometry.
+Three new upstream regression tests passed in
+[CI](https://github.com/anttiluode/PerceptionLab/actions/runs/43689447103).
+
+**Host-style replay:** new `tests/test_graph003_host_replay.py` loads
+`workflows/003_fading_feedback_wave.json` with the GUI constructor/config
+sequence, wires the *actual* graph's edge list, and steps in the GUI
+pre-step/transfer/step order. It tests a live loop, an unplugged loop
+and a seedless loop. The specific headless job checks out PR #4's fix
+until it is merged into upstream main.
+
+Until PR #4 is merged and the user reruns GUI, **do not describe the
+interactive graph as verified**, even if the headless replay succeeds.
