@@ -1,5 +1,10 @@
 # PerceptionLabAI — the experimental workshop
 
+**Start here:** [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md) · [004 experiment](experiments/004_two_histories/README.md) · [004 measured receipt](results/004_two_histories_initial.json)
+
+**004 first result:** Two differing fading-history nodes share a single wave field. With both connected, fast A fired 21 times and slow B zero, while B alone fired four times. Swapping their fading rates reversed the active unit. This is a negative result for initial alternation and a candidate for history-dependent suppression; follow-up state/readout interventions are in progress. All seven 004 GUI graphs now have measured calibration thresholds, and nothing is yet claimed about their actual GUI run.
+
+---
 ## Experiment 003 — CURRENT WORKFLOW (PerceptionLabAI/main)
 
 [Open saved graph](workflows/003_fading_feedback_wave.json) · [Fading History Spike node](nodes/fading_history_spike_node.py) · [research/results](experiments/003_fade_closed_loop/README.md).

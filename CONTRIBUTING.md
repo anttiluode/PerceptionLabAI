@@ -10,3 +10,13 @@
 - No hype, no invented measurements, no quantum/biological claims from analogies.
 
 Run `python -m unittest discover -s tests -v` and `python experiments/001_causal_age/run.py --upstream PerceptionLab` with upstream checked out beside this repo, or use the included GitHub Actions workflow.
+
+## Keep the AI workshop manuals up to date
+
+Every new/revised node must have its class, actual port names, behaviour,
+limits and upstream status in [Node Manual](docs/NODE_MANUAL.md). Every
+numbered and control workflow must appear in
+[Workflow Manual](docs/WORKFLOW_MANUAL.md), with a tested JSON graph,
+dossier and durable result receipt. AI work requested by the owner
+goes to **main** by default for normal `git pull`, not a new branch
+that hides the files. Keep failures and null results visible.

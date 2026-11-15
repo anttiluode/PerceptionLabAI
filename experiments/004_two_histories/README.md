@@ -8,19 +8,19 @@ it does not test learning, musical perception, consciousness or real neurons.
 
 ## Real engine and ingredients
 
-Reuse **one** upstream \`WaveFieldNode\` (96×96, speed 0.5, four substeps,
-damping 0.006), **one** original \`PulseSourceNode\` (single shot at frame 18,
+Reuse **one** upstream `WaveFieldNode` (96×96, speed 0.5, four substeps,
+damping 0.006), **one** original `PulseSourceNode` (single shot at frame 18,
 amplitude 0.12, width 2), and **two instances** of the *existing* workshop
-\`FadingHistorySpikeNode\`, without inventing another neuron class.
+`FadingHistorySpikeNode`, without inventing another neuron class.
 
-- Unit A: fast trace decay 0.86, input \`read_1\`, pulse 0.24 into \`write_0\`.
-- Unit B: slow trace decay 0.95, input \`read_3\`, pulse 0.24 into \`write_2\`.
-- Both integrate \`abs(wave read)\`, arm above high threshold and fire after
+- Unit A: fast trace decay 0.86, input `read_1`, pulse 0.24 into `write_0`.
+- Unit B: slow trace decay 0.95, input `read_3`, pulse 0.24 into `write_2`.
+- Both integrate `abs(wave read)`, arm above high threshold and fire after
   the trace drops below a lower threshold. Neither emits from silence.
 - Two SignalPlotter scopes show traces and spikes; the upstream
   TemporalMultiScope shows field propagation across four apertures.
 - The host transfers all *previous-tick* outputs, then steps all nodes.
-  \`run.py\` reproduces that order and uses the **saved workflow files**
+  `run.py` reproduces that order and uses the **saved workflow files**
   as the source of graph wiring.
 
 ## Predicted outcomes
@@ -44,21 +44,21 @@ startup pulse.
 
 ## Controls and methods
 
-\`run.py\` evaluates the real saved graph and these variants:
+`run.py` evaluates the real saved graph and these variants:
 
 | Variant | Purpose |
 |---|---|
-| \`004_two_fades_one_field.json\` | Both active, single common field |
-| \`004_a_only.json\` / \`004_b_only.json\` | Each individual return path |
-| \`004_no_return.json\` / \`004_no_seed.json\` | Passive ringdown and empty initial state |
-| \`004_swap_decay.json\` | Swap only A/B decay rates |
-| \`004_swap_sites.json\` | Swap A/B read and write apertures |
-| \`cut_b_midrun\` (runner only) | B feedback disconnected after half the run |
-| \`swap_*_frozen\` (runner only) | Same swaps with baseline thresholds held fixed |
+| `004_two_fades_one_field.json` | Both active, single common field |
+| `004_a_only.json` / `004_b_only.json` | Each individual return path |
+| `004_no_return.json` / `004_no_seed.json` | Passive ringdown and empty initial state |
+| `004_swap_decay.json` | Swap only A/B decay rates |
+| `004_swap_sites.json` | Swap A/B read and write apertures |
+| `cut_b_midrun` (runner only) | B feedback disconnected after half the run |
+| `swap_*_frozen` (runner only) | Same swaps with baseline thresholds held fixed |
 
 Each **independent open-loop calibration** drives only the single starter
 pulse, with both return wires disconnected. For each trace, select:
-\`arm=0.45*peak\`, \`release=0.20*peak\`; freeze during evaluation.
+`arm=0.45*peak`, `release=0.20*peak`; freeze during evaluation.
 Swaps have both recalibrated and frozen-threshold comparisons. A positive
 or null result of a swap is not necessarily an isolation of the fading
 time constant because the calibration also changes excitation thresholds.
@@ -72,26 +72,45 @@ statistical population.**
 
 ## Running
 
-\`\`\`bat
+```bat
 cd /d D:\anttiluode\PerceptionLabAI
 git pull origin main
 python -m pip install numpy opencv-python-headless
 python -m unittest discover -s tests -v
 python experiments\004_two_histories\run.py --upstream PerceptionLab
-\`\`\`
+```
 
 With a separate sibling PerceptionLab checkout, instead use
-\`--upstream ..\PerceptionLab\`.
+`--upstream ..\PerceptionLab`.
 
-**GUI:** copy \`nodes\fading_history_spike_node.py\` into the local
-PerceptionLab \`nodes\` folder, restart PerceptionLab, and open
-\`workflows\004_two_fades_one_field.json\`. The starting workflow
-thresholds are **provisional until replaced with measured calibration
-numbers**. The Wave Field must show ~4.9 frames per gap on 96×96.
+**GUI:** copy `nodes\fading_history_spike_node.py` into the local
+PerceptionLab `nodes` folder, restart PerceptionLab, and open
+`workflows\004_two_fades_one_field.json`. All seven workflow configurations now contain **measured open-loop calibration thresholds** from the CI reference run. The Wave Field must show ~4.9 frames per gap on 96×96.
 All variants are graphs loadable in the current host.
 
 ## Status
 
-**Not yet measured when this dossier was created.** The actual CI
-receipt belongs at \`results/004_two_histories.json\`. Do not infer
-coupling, phase locking or alternation until inspecting isolated controls.
+**Measured**: see below. The experiment's initial hypothesis of interleaving was not supported.
+
+## First measured result — suppression rather than alternation
+
+[Passing first 004 CI run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43691739662), six workflow tests and a deterministic 650-step simulation of the actual WaveField. [Permanent numerical receipt](../../results/004_two_histories_initial.json).
+
+| Case | A spikes (late) | B spikes (late) | Measured mean late interval |
+|---|---:|---:|---|
+| Both connected, A fast/B slow | **21 (11)** | **0 (0)** | A: 29 frames |
+| A-only | **21 (11)** | 0 | A: 29 frames |
+| B-only | 0 | **4 (2)** | B: 154 frames |
+| Both returns unplugged | 1 | 1 | No recurrence |
+| No starter pulse | 0 | 0 | None |
+| Rates swapped, separately calibrated | 0 | **8 (4)** | B: 81 frames |
+| Sites swapped, separately calibrated | **8 (4)** | 0 | A: 81 frames |
+| Rates swapped, original thresholds frozen | 10 (5) | 2 (1) | A: 62.25 frames |
+
+All cases recorded **zero field-clipping frames**. The faster-decay identity was dominant in the separately calibrated rate and position swaps of this particular configuration.
+
+**Interpretation limit:** We have evidence that activity from the fast unit is associated with silence in the slower one; B can fire alone but not while A is continuously regenerating the wave. It is *consistent* with A keeping B's leaky trace above the lower release threshold. The first sweep did **not** directly test B's trace against that threshold or rescue B by disabling A; no phase-locking measurement is meaningful when B emits no spikes.
+
+**Follow-up implemented:** the runner now cuts **A's** return halfway through, varies its return weight (0.25/0.5/0.75), and records B's late trace min/mean/max, armed fraction, and fraction above the release threshold. Compare rescued B spikes to B-only. These new measurements must be inspected before promoting a mechanism claim. Additional GUI validation is still pending.
+
+Measured GUI thresholds for the base graph: A arm **0.10849628**, release **0.04822057**; B arm **0.03350883**, release **0.01489281**. Swapped-rate and swapped-site graphs use their respective independent open-loop calibration values, not these base numbers.
