@@ -93,6 +93,19 @@ class Test005(unittest.TestCase):
         self.assertEqual(sample["peak_energy"],0)
         self.assertTrue(all(not v for v in sample["spikes"].values()))
 
+    def test_frozen_saved_graph_readout_score_matches_offline_linear_model(self):
+        stored=json.loads((ROOT/"results"/"005_frozen_readout_360.json").read_text())
+        w=np.asarray(stored["weights"])
+        b=float(stored["bias"])
+        for order in ("AB","BA"):
+            with self.subTest(order=order):
+                g=mod.prepare_trial(mod.read_graph("feedback",order),order,
+                                    mod.TEST[0])
+                out=mod.simulate(g,self.upstream,steps=361)
+                self.assertEqual(out["probe_ready"][360],1.0)
+                expected=float(np.dot(w,out["features"][360])+b)
+                self.assertAlmostEqual(out["probe_scores"][360],expected,places=6)
+
     def test_ridge_probe_uses_only_training_pairs(self):
         # Only a synthetic sanity check for probe score, NOT the physical result.
         train={}
