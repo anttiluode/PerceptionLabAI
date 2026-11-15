@@ -242,12 +242,15 @@ def main(upstream,size=96,steps=650):
        "no_seed":"004_no_seed.json",
        "swap_decay":"004_swap_decay.json",
        "swap_sites":"004_swap_sites.json",
+       "a_return_0.25":"004_weak_a_interleaving.json",
+       "weak_a_no_b_return":"004_weak_a_without_b_return.json",
     }
     graphs={k:json.loads((ROOT/"workflows"/name).read_text())
             for k,name in paths.items()}
     base_cal=calibrate(upstream,graphs["coupled"])
     calibrated={"coupled":base_cal, "a_only":base_cal,"b_only":base_cal,
-                "no_return":base_cal,"no_seed":base_cal}
+                "no_return":base_cal,"no_seed":base_cal,
+                "a_return_0.25":base_cal,"weak_a_no_b_return":base_cal}
     calibrated["swap_decay"]=calibrate(upstream,graphs["swap_decay"])
     calibrated["swap_sites"]=calibrate(upstream,graphs["swap_sites"])
     cases={}
@@ -263,7 +266,7 @@ def main(upstream,size=96,steps=650):
         upstream,graphs["coupled"],base_cal,steps,cut_b_at=steps//2)
     cases["cut_a_midrun"]=run_case(
         upstream,graphs["coupled"],base_cal,steps,cut_a_at=steps//2)
-    for strength in (0.25,0.50,0.75):
+    for strength in (0.15,0.30,0.35,0.40,0.45,0.50,0.75):
         modified=copy.deepcopy(graphs["coupled"])
         for e in modified["edges"]:
             if (e["from_node_id"]==2 and e["to_node_id"]==1 and
