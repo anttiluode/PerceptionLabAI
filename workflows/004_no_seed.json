@@ -1,0 +1,227 @@
+{
+  "global_settings": {
+    "coupling": 100,
+    "speed": 100
+  },
+  "nodes": [
+    {
+      "id": 0,
+      "class_name": "PulseSourceNode",
+      "pos_x": -720,
+      "pos_y": -80,
+      "width": 205,
+      "height": 140,
+      "config": {
+        "node_title": "ONE startup pulse",
+        "period": 0,
+        "width": 2,
+        "amplitude": 0,
+        "warmup": 18
+      }
+    },
+    {
+      "id": 1,
+      "class_name": "WaveFieldNode",
+      "pos_x": -440,
+      "pos_y": -305,
+      "width": 310,
+      "height": 340,
+      "config": {
+        "node_title": "ONE shared 96x96 wave",
+        "size": 96,
+        "speed": 0.5,
+        "damping": 0.006,
+        "substeps": 4,
+        "drive_gain": 0.6,
+        "source_radius": 4,
+        "edge_absorb": 0.06,
+        "read_aperture": 6,
+        "line_y": 0.5,
+        "first_x": 0.2,
+        "last_x": 0.92,
+        "source_x": 0.08
+      }
+    },
+    {
+      "id": 2,
+      "class_name": "FadingHistorySpikeNode",
+      "pos_x": -30,
+      "pos_y": -310,
+      "width": 325,
+      "height": 180,
+      "config": {
+        "node_title": "A / FAST fade 0.86",
+        "decay": 0.86,
+        "arm_threshold": 0.08,
+        "release_threshold": 0.03,
+        "pulse_amplitude": 0.24,
+        "refractory": 3,
+        "enabled": 1
+      }
+    },
+    {
+      "id": 3,
+      "class_name": "FadingHistorySpikeNode",
+      "pos_x": -30,
+      "pos_y": -45,
+      "width": 325,
+      "height": 180,
+      "config": {
+        "node_title": "B / SLOW fade 0.95",
+        "decay": 0.95,
+        "arm_threshold": 0.05,
+        "release_threshold": 0.02,
+        "pulse_amplitude": 0.24,
+        "refractory": 3,
+        "enabled": 1
+      }
+    },
+    {
+      "id": 4,
+      "class_name": "TemporalMultiScopeNode",
+      "pos_x": -445,
+      "pos_y": 205,
+      "width": 435,
+      "height": 235,
+      "config": {
+        "node_title": "Shared wave arrivals",
+        "history_len": 400,
+        "max_lag": 80,
+        "live_threshold": 0.00001,
+        "rail_epsilon": 0.02,
+        "autoscale": 1
+      }
+    },
+    {
+      "id": 5,
+      "class_name": "SignalPlotterNode",
+      "pos_x": 400,
+      "pos_y": -300,
+      "width": 335,
+      "height": 210,
+      "config": {
+        "node_title": "Red A trace / Green B trace / Blue A spikes",
+        "history_size": 500
+      }
+    },
+    {
+      "id": 6,
+      "class_name": "SignalPlotterNode",
+      "pos_x": 400,
+      "pos_y": 0,
+      "width": 335,
+      "height": 210,
+      "config": {
+        "node_title": "Red A spikes / Green B spikes / Blue field energy",
+        "history_size": 500
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from_node_id": 0,
+      "from_port": "signal",
+      "to_node_id": 1,
+      "to_port": "write_0",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_1",
+      "to_node_id": 2,
+      "to_port": "signal_in",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 2,
+      "from_port": "pulse",
+      "to_node_id": 1,
+      "to_port": "write_0",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_3",
+      "to_node_id": 3,
+      "to_port": "signal_in",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 3,
+      "from_port": "pulse",
+      "to_node_id": 1,
+      "to_port": "write_2",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_0",
+      "to_node_id": 4,
+      "to_port": "sig_0",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_1",
+      "to_node_id": 4,
+      "to_port": "sig_1",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_2",
+      "to_node_id": 4,
+      "to_port": "sig_2",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "read_3",
+      "to_node_id": 4,
+      "to_port": "sig_3",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 2,
+      "from_port": "trace",
+      "to_node_id": 5,
+      "to_port": "signal_A (Red)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 3,
+      "from_port": "trace",
+      "to_node_id": 5,
+      "to_port": "signal_B (Green)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 2,
+      "from_port": "pulse",
+      "to_node_id": 5,
+      "to_port": "signal_C (Blue)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 2,
+      "from_port": "pulse",
+      "to_node_id": 6,
+      "to_port": "signal_A (Red)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 3,
+      "from_port": "pulse",
+      "to_node_id": 6,
+      "to_port": "signal_B (Green)",
+      "learned_weight": 1
+    },
+    {
+      "from_node_id": 1,
+      "from_port": "energy",
+      "to_node_id": 6,
+      "to_port": "signal_C (Blue)",
+      "learned_weight": 1
+    }
+  ]
+}
