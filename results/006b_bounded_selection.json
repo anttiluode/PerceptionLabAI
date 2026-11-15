@@ -1,0 +1,649 @@
+{
+  "experiment": "006b_bounded_multi_context_selection",
+  "scope": "post-hoc modified algorithm following 006 failure; independent final split",
+  "fixed_decoder_fit_contexts": [
+    [
+      -4,
+      31,
+      1.03
+    ],
+    [
+      -1,
+      39,
+      0.96
+    ],
+    [
+      2,
+      33,
+      1.07
+    ],
+    [
+      0,
+      37,
+      1
+    ],
+    [
+      3,
+      28,
+      0.94
+    ],
+    [
+      -2,
+      42,
+      1.08
+    ],
+    [
+      1,
+      34,
+      1.02
+    ],
+    [
+      -3,
+      40,
+      0.98
+    ]
+  ],
+  "reward_experience_contexts": [
+    [
+      -6,
+      31,
+      0.99
+    ],
+    [
+      4,
+      36,
+      1.11
+    ],
+    [
+      1,
+      29,
+      0.89
+    ],
+    [
+      -3,
+      44,
+      1.07
+    ],
+    [
+      5,
+      33,
+      0.95
+    ],
+    [
+      -1,
+      47,
+      1.03
+    ],
+    [
+      3,
+      40,
+      0.91
+    ],
+    [
+      0,
+      25,
+      1.09
+    ]
+  ],
+  "fresh_final_contexts": [
+    [
+      -7,
+      35,
+      0.91
+    ],
+    [
+      7,
+      46,
+      1.08
+    ],
+    [
+      -6,
+      45,
+      1.12
+    ],
+    [
+      6,
+      25,
+      0.88
+    ],
+    [
+      -2,
+      49,
+      1.04
+    ],
+    [
+      2,
+      47,
+      0.93
+    ],
+    [
+      1,
+      30,
+      1.13
+    ],
+    [
+      -1,
+      26,
+      0.97
+    ]
+  ],
+  "frozen_decoder": {
+    "feature_set": "all_six",
+    "weights": [
+      7.208083440908597,
+      44.85078510974411,
+      -7.1030548897611725,
+      0.9093392704659804,
+      -264.963205805618,
+      60.521813209588544
+    ],
+    "bias": -3.6351585123245074,
+    "train_mean": [
+      0.06502750618869432,
+      0.0937226125032453,
+      0.07434321050025101,
+      0.01882118788510373,
+      0.0028562400099514415,
+      0.0038110166469599084
+    ],
+    "train_std": [
+      0.03775124921637571,
+      0.028765902512546345,
+      0.019319418830175107,
+      0.023244762745734903,
+      0.003343712945205352,
+      0.004187355855186948
+    ]
+  },
+  "training": {
+    "learning_rate": 0.02,
+    "max_update": 0.05,
+    "delta": 0.1,
+    "two_contexts_per_update": true,
+    "resource_cost": 0,
+    "update_episodes": 4
+  },
+  "trained_weight_trajectory": [
+    {
+      "step": -1,
+      "weight": 0.5
+    },
+    {
+      "step": 0,
+      "contexts": [
+        [
+          -6,
+          31,
+          0.99
+        ],
+        [
+          4,
+          36,
+          1.11
+        ]
+      ],
+      "utility_plus_mean": -0.1689659423197772,
+      "utility_minus_mean": -6.44959768882074,
+      "reward_diff_used": 6.280631746500963,
+      "weight_before": 0.5,
+      "weight_after": 0.55,
+      "update": 0.050000000000000044,
+      "max_update": 0.05
+    },
+    {
+      "step": 1,
+      "contexts": [
+        [
+          1,
+          29,
+          0.89
+        ],
+        [
+          -3,
+          44,
+          1.07
+        ]
+      ],
+      "utility_plus_mean": -0.9829472594406763,
+      "utility_minus_mean": -0.5041513369370405,
+      "reward_diff_used": -0.4787959225036358,
+      "weight_before": 0.55,
+      "weight_after": 0.5021204077496365,
+      "update": -0.047879592250363534,
+      "max_update": 0.05
+    },
+    {
+      "step": 2,
+      "contexts": [
+        [
+          5,
+          33,
+          0.95
+        ],
+        [
+          -1,
+          47,
+          1.03
+        ]
+      ],
+      "utility_plus_mean": -0.7435534672520462,
+      "utility_minus_mean": -0.3917105200717733,
+      "reward_diff_used": -0.35184294718027287,
+      "weight_before": 0.5021204077496365,
+      "weight_after": 0.4669361130316092,
+      "update": -0.03518429471802731,
+      "max_update": 0.05
+    },
+    {
+      "step": 3,
+      "contexts": [
+        [
+          3,
+          40,
+          0.91
+        ],
+        [
+          0,
+          25,
+          1.09
+        ]
+      ],
+      "utility_plus_mean": -1.8324223016168417,
+      "utility_minus_mean": -1.358749658136099,
+      "reward_diff_used": -0.4736726434807428,
+      "weight_before": 0.4669361130316092,
+      "weight_after": 0.41956884868353495,
+      "update": -0.047367264348074256,
+      "max_update": 0.05
+    }
+  ],
+  "inverted_reward_trajectory": [
+    {
+      "step": -1,
+      "weight": 0.5
+    },
+    {
+      "step": 0,
+      "contexts": [
+        [
+          -6,
+          31,
+          0.99
+        ],
+        [
+          4,
+          36,
+          1.11
+        ]
+      ],
+      "utility_plus_mean": -0.1689659423197772,
+      "utility_minus_mean": -6.44959768882074,
+      "reward_diff_used": -6.280631746500963,
+      "weight_before": 0.5,
+      "weight_after": 0.45,
+      "update": -0.04999999999999999,
+      "max_update": 0.05
+    },
+    {
+      "step": 1,
+      "contexts": [
+        [
+          1,
+          29,
+          0.89
+        ],
+        [
+          -3,
+          44,
+          1.07
+        ]
+      ],
+      "utility_plus_mean": -1.4078689041238324,
+      "utility_minus_mean": -1.868071504921954,
+      "reward_diff_used": -0.4602026007981217,
+      "weight_before": 0.45,
+      "weight_after": 0.4039797399201878,
+      "update": -0.04602026007981219,
+      "max_update": 0.05
+    },
+    {
+      "step": 2,
+      "contexts": [
+        [
+          5,
+          33,
+          0.95
+        ],
+        [
+          -1,
+          47,
+          1.03
+        ]
+      ],
+      "utility_plus_mean": -0.7202617128288644,
+      "utility_minus_mean": -4.095662790540977,
+      "reward_diff_used": -3.3754010777121124,
+      "weight_before": 0.4039797399201878,
+      "weight_after": 0.35397973992018783,
+      "update": -0.04999999999999999,
+      "max_update": 0.05
+    },
+    {
+      "step": 3,
+      "contexts": [
+        [
+          3,
+          40,
+          0.91
+        ],
+        [
+          0,
+          25,
+          1.09
+        ]
+      ],
+      "utility_plus_mean": -0.68278937024094,
+      "utility_minus_mean": -1.230611480288923,
+      "reward_diff_used": -0.547822110047983,
+      "weight_before": 0.35397973992018783,
+      "weight_after": 0.30397973992018784,
+      "update": -0.04999999999999999,
+      "max_update": 0.05
+    }
+  ],
+  "heldout": {
+    "bounded_learned": {
+      "weight": 0.41956884868353495,
+      "correct": 8,
+      "total": 16,
+      "accuracy": 0.5,
+      "correct_full_pairs": 2,
+      "mean_margin": 0.94632,
+      "mean_total_spikes": {
+        "3": 7.875,
+        "4": 6.562,
+        "5": 5
+      },
+      "max_abs_field": 0.867055,
+      "sampled_clip_frames": 0,
+      "example_AB": {
+        "3": [
+          64,
+          103,
+          173,
+          257,
+          339,
+          424,
+          513,
+          601
+        ],
+        "4": [
+          138,
+          213,
+          302,
+          380,
+          470,
+          558,
+          647
+        ],
+        "5": [
+          113,
+          216,
+          386,
+          480,
+          568,
+          656
+        ]
+      },
+      "example_BA": {
+        "3": [
+          97,
+          141,
+          222,
+          309,
+          399,
+          489,
+          578
+        ],
+        "4": [
+          103,
+          178,
+          267,
+          357,
+          447,
+          536,
+          625
+        ],
+        "5": [
+          184,
+          275,
+          364,
+          455,
+          545,
+          633
+        ]
+      }
+    },
+    "initial_frozen": {
+      "weight": 0.5,
+      "correct": 10,
+      "total": 16,
+      "accuracy": 0.625,
+      "correct_full_pairs": 2,
+      "mean_margin": -0.11488,
+      "mean_total_spikes": {
+        "3": 7.938,
+        "4": 6.125,
+        "5": 5.125
+      },
+      "max_abs_field": 0.872184,
+      "sampled_clip_frames": 0,
+      "example_AB": {
+        "3": [
+          64,
+          103,
+          183,
+          268,
+          351,
+          437,
+          528,
+          619
+        ],
+        "4": [
+          151,
+          224,
+          314,
+          392,
+          485,
+          576
+        ],
+        "5": [
+          113,
+          225,
+          399,
+          494,
+          584
+        ]
+      },
+      "example_BA": {
+        "3": [
+          97,
+          141,
+          223,
+          312,
+          403,
+          495,
+          586
+        ],
+        "4": [
+          103,
+          178,
+          269,
+          360,
+          453,
+          544,
+          636
+        ],
+        "5": [
+          184,
+          279,
+          367,
+          461,
+          551,
+          643
+        ]
+      }
+    },
+    "pruned_zero": {
+      "weight": 0,
+      "correct": 14,
+      "total": 16,
+      "accuracy": 0.875,
+      "correct_full_pairs": 6,
+      "mean_margin": 1.2234,
+      "mean_total_spikes": {
+        "3": 8.5,
+        "4": 7.125,
+        "5": 6.625
+      },
+      "max_abs_field": 0.884689,
+      "sampled_clip_frames": 0,
+      "example_AB": {
+        "3": [
+          64,
+          103,
+          159,
+          235,
+          312,
+          390,
+          468,
+          546,
+          624
+        ],
+        "4": [
+          122,
+          195,
+          272,
+          350,
+          428,
+          506,
+          584
+        ],
+        "5": [
+          113,
+          198,
+          274,
+          352,
+          431,
+          509,
+          587
+        ]
+      },
+      "example_BA": {
+        "3": [
+          97,
+          141,
+          218,
+          296,
+          374,
+          452,
+          530,
+          608
+        ],
+        "4": [
+          103,
+          178,
+          256,
+          334,
+          412,
+          490,
+          568,
+          646
+        ],
+        "5": [
+          184,
+          258,
+          337,
+          415,
+          493,
+          571,
+          649
+        ]
+      }
+    },
+    "inverted_reward": {
+      "weight": 0.30397973992018784,
+      "correct": 7,
+      "total": 16,
+      "accuracy": 0.4375,
+      "correct_full_pairs": 2,
+      "mean_margin": 0.41105,
+      "mean_total_spikes": {
+        "3": 7.812,
+        "4": 6.875,
+        "5": 5.375
+      },
+      "max_abs_field": 0.855278,
+      "sampled_clip_frames": 0,
+      "example_AB": {
+        "3": [
+          64,
+          103,
+          171,
+          253,
+          334,
+          417,
+          502,
+          588
+        ],
+        "4": [
+          134,
+          210,
+          296,
+          374,
+          460,
+          546,
+          632
+        ],
+        "5": [
+          113,
+          213,
+          380,
+          470,
+          555,
+          642
+        ]
+      },
+      "example_BA": {
+        "3": [
+          97,
+          141,
+          221,
+          305,
+          392,
+          473,
+          557,
+          638
+        ],
+        "4": [
+          103,
+          178,
+          263,
+          350,
+          435,
+          514,
+          600
+        ],
+        "5": [
+          184,
+          269,
+          360,
+          519
+        ]
+      }
+    }
+  },
+  "limits": "External label-based reward; parameter chosen after seeing 006 failure; four capped updates do not imply robust or biological learning. Identical physical gate and readout throughout controls.",
+  "source_run": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43698479884",
+  "source_commit": "b75e0765572de52a34ec877acea1d42bb75e6a9e"
+}
