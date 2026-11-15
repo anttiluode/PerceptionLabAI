@@ -97,3 +97,17 @@ With unlimited numerical precision, the passive field at frame 650 decoded **16/
 The original third unit (C decay .975) never emitted. The exploratory [C-decay scan](../results/005_C_recruitment.json) found **0.93** allowed recurrent firing in all three. However, [fresh held-out three-active follow-up](../experiments/005_order_of_falls/THREE_ACTIVE.md) scored **10/16** with C feedback, versus **15/16** when the C return edge was disconnected. All six three-active GUI control graphs deliberately keep **untrained** observer weights.
 
 **Node independence:** the `PopulationOrderReadoutNode` is an instrument, not a fourth recurrent neuron; its weights are trained offline, and it holds its own spike EMAs. A high decoding score here does not establish synaptic learning or a representation robust to arbitrary noise.
+
+## 006 — PlasticReturnGateNode (workshop, task-rewarded)
+
+[Source](../nodes/plastic_return_gate_node.py) · [006 report](../experiments/006_reward_selected_return/README.md) · [006b report](../experiments/006b_bounded_selection/README.md).
+
+Category: Cognition. Inputs: `pre_spike` (signal) and `reward_difference` (signal). Outputs: `signal` (the physically weighted pulse), `weight`, `effective_weight`, `update_count`, `last_update`, and `pre_activity` (all scalar signals).
+
+The node retains its own bounded weight between episodes. The outgoing pulse is `pre_spike * clip(weight + exploration_direction * perturbation, 0, 1)`. A two-sided external comparison of utility at plus and minus perturbations can be delivered to `reward_difference`, causing a real update of the stored weight. GUI parameters are `weight`, `exploration_direction`, `perturbation`, `learning_rate`, `resource_cost`, `max_update`, `learn_enabled`. A fixed weight does not change without reward input. Setting `max_update=1` recovers 006's original rule; 006b uses `max_update=0.05`.
+
+**Crucial credit-assignment limit:** A frozen external readout and labelled AB/BA training context are used to *calculate the scalar reward*. The gate itself sees neither label nor readout coefficients, but this is **supervised reward-based parameter tuning**, not independently chosen biological goals, eligibility-trace STDP, growing dendrites, or unsupervised predictive coding.
+
+Measured **006 failure**: learned weight 0.847595 scored only 6/16 held-out, versus 14/16 for both frozen w=0.5 and pruned w=0.0. Measured **006b bounded-update failure**, on a different fresh final split: learned w=0.419569 scored 8/16, frozen w=0.5 scored 10/16, pruned w=0.0 scored 14/16. Do not promote this node as a working learning-memory mechanism based on a weight change alone.
+
+The saved 006 GUI graphs include the gate but do **not** include a teacher/reward source. The headless runner supplies reward differences through the same input API between episodes; GUI autonomous learning has not been demonstrated.

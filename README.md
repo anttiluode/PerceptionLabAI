@@ -1,5 +1,14 @@
 # PerceptionLabAI — the experimental workshop
 
+## Latest experiment — 006 / 006b: a plastic return is not yet useful learning
+
+[006 original report](experiments/006_reward_selected_return/README.md) · [006b bounded follow-up](experiments/006b_bounded_selection/README.md) · [Full 006 receipt](results/006_reward_selected_return.json) · [006b receipt](results/006b_bounded_selection.json) · [PlasticReturnGateNode](nodes/plastic_return_gate_node.py).
+
+After the fixed-graph 005 tests, we added one **genuinely mutable physical return gain** from C's fading-history pulse back to the same upstream WaveField. The gate learns through a scalar difference of two **externally supervised** reward measurements; it does not see the AB/BA label directly. The first rule changed the C return from 0.50 to **0.848**, but got only **6/16** new AB/BA labels right, against **14/16** with the frozen edge. A second, smaller/bounded multi-context rule changed it to **0.420** but scored **8/16** on a *different fresh* final split, compared with **10/16** frozen and **14/16** completely pruned.
+
+**These are negative results for useful plasticity.** The physical weight can change, but the chosen updates do not preserve event order better. The original 006 and the separately labelled exploratory 006b remain available with raw receipts and controls. No GUI execution or independent neural learning is claimed.
+
+---
 ## 005 results: order of falls
 
 [**005 complete headless report**](experiments/005_order_of_falls/README.md) · [Original full receipt](results/005_order_of_falls.json) · [C-decay scan](results/005_C_recruitment.json) · [Three-active follow-up](experiments/005_order_of_falls/THREE_ACTIVE.md) · [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md).
