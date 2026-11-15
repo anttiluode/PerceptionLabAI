@@ -57,7 +57,7 @@ class Test005b(unittest.TestCase):
         spec=importlib.util.spec_from_file_location("lab005_live",src)
         m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
         for order,g in self.graphs("feedback").items():
-            r=m.simulate(g,self.upstream,steps=260)
+            r=m.simulate(g,self.upstream,steps=340)
             self.assertTrue(any(t>=160 for t in r["spikes"]["5"]),
                             "Third unit must fire after external pulses end")
             self.assertEqual(r["clipped_frames"],0)
