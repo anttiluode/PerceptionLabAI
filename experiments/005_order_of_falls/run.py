@@ -261,6 +261,30 @@ def test_linear(test,model,checkpoint):
             "mean_labelled_margin":round(float(np.mean(margins)),6)}
 
 
+def observed_resolution(dataset, thresholds):
+    """Label-blind instrumental floor. This is an exploratory robustness check,
+    NOT part of the original preregistered snapshot readout."""
+    result={}
+    for key,sample in dataset.items():
+        amended=copy.deepcopy(sample)
+        amended["features"]={
+            t:[0.0 if abs(value)<thresholds[j] else value
+               for j,value in enumerate(vector)]
+            for t,vector in sample["features"].items()
+        }
+        result[key]=amended
+    return result
+
+
+def feature_magnitudes(dataset):
+    """Magnitude of raw observable features, including numeric near-zeros."""
+    return {str(t):[
+        float(max(abs(sample["features"][t][i])
+                  for sample in dataset.values()))
+        for i in range(6)]
+        for t in SNAPSHOTS}
+
+
 def summarize_spikes(data):
     a=[r for (_,order),r in sorted(data.items())]
     n=len(a)
@@ -275,19 +299,33 @@ def run(upstream,steps=TRIAL_STEPS):
     upstream=pathlib.Path(upstream)
     cal=calibrate(upstream)
     out={}
+    # Trace floor = 1% of open-loop calibration peak; spike-rate floor =
+    # 0.1% of a single event's instantaneous maximum. Both label blind.
+    # A second sensor-resolution test, declared after observing
+    # suspicious tiny post-pulse EMA decoding in first CI receipt.
+    signal_floor=[
+        .01*cal[str(i)]["trace_peak"] for i in NODE_IDS
+    ]+[.001]*3
     for mode in ("feedback","passive","no_C"):
         train=dataset(upstream,mode,cal,TRAIN,steps)
         held=dataset(upstream,mode,cal,TEST,steps)
         if any(z["clipped_frames"] for z in list(train.values())+list(held.values())):
             raise RuntimeError("Wave clipping: calibration/energy need rechecking")
+        floored_train=observed_resolution(train,signal_floor)
+        floored_test=observed_resolution(held,signal_floor)
         stages={}
         for t in SNAPSHOTS:
             models={key:fit_linear(train,t,key) for key in FEATURE_SETS}
+            robust_models={key:fit_linear(floored_train,t,key)
+                           for key in FEATURE_SETS}
             stages[str(t)]={"test":test_linear(held,models["all_six"],t),
                             "training":test_linear(train,models["all_six"],t),
                             "ablation_readouts":{
                                 key:test_linear(held,m,t)
-                                for key,m in models.items()}}
+                                for key,m in models.items()},
+                            "resolution_floor_readouts":{
+                                key:test_linear(floored_test,m,t)
+                                for key,m in robust_models.items()}}
             if t==360:stages[str(t)]["frozen_model"]=models["all_six"]
         out[mode]={
            "stages":stages,
@@ -295,6 +333,7 @@ def run(upstream,steps=TRIAL_STEPS):
            "heldout_pair_count":len(TEST),
            "source_energies_matched":True,
            "spikes":summarize_spikes(held),
+           "feature_abs_max_by_snapshot":feature_magnitudes(held),
            "max_abs_wave":max(x["max_abs_field"] for x in held.values()),
            "heldout_example_spikes":{
                order:held[(0,order)]["spikes"] for order in ("AB","BA")
@@ -315,6 +354,7 @@ def run(upstream,steps=TRIAL_STEPS):
       "training_trial_parameters":TRAIN,
       "heldout_trial_parameters":TEST,
       "calibration":cal,
+      "posthoc_sensor_resolution_floors":signal_floor,
       "modes":out,
       "limits":"single deterministic simulator/parameter set; linear readout on fading states plus readout's own spike EMA; not learning in the recurrent medium. Passive condition has residual waves."
     }
@@ -336,8 +376,11 @@ if __name__=="__main__":
         "modes":{k:{
             "snapshots":{t:{"combined":x["test"],
                              "traces":x["ablation_readouts"]["traces_only"],
-                             "spike_history":x["ablation_readouts"]["spike_history_only"]}
+                             "spike_history":x["ablation_readouts"]["spike_history_only"],
+                             "resolution_floor":x["resolution_floor_readouts"]}
                              for t,x in v["stages"].items()},
-            "spikes":v["spikes"],"max_abs_wave":v["max_abs_wave"]}
+            "spikes":v["spikes"],
+            "observable_max":v["feature_abs_max_by_snapshot"],
+            "max_abs_wave":v["max_abs_wave"]}
             for k,v in result["modes"].items() if k!="no_input"}}
     print(json.dumps(report,indent=2))
