@@ -1,5 +1,14 @@
 # PerceptionLabAI — the experimental workshop
 
+## 005 results: order of falls
+
+[**005 complete headless report**](experiments/005_order_of_falls/README.md) · [Original full receipt](results/005_order_of_falls.json) · [C-decay scan](results/005_C_recruitment.json) · [Three-active follow-up](experiments/005_order_of_falls/THREE_ACTIVE.md) · [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md).
+
+**Original 005:** AB versus BA is readable after the stimuli end. The recurrent system scored 15/16 held-out examples at frame 650 with a stated finite sensor resolution, but an unbounded-precision passive field was an even better decoder. At the finite resolution, passive decoding fell to 8/16. The original third unit **never fired**. The frozen frame-360 trained GUI readout scored 14/16 on held-out trials; it is a diagnostic, not learning inside the medium.
+
+**Exploratory 005b:** C decay 0.93 activated all three. Yet at frame 650 the three-return system scored only **10/16**, while disconnecting C's return improved the score to **15/16** on fresh held-out pairs. More active connections did not automatically improve usable memory. All details and null results are preserved.
+
+---
 ## Current experiment 005 · Order of falls
 
 [**005 research dossier**](experiments/005_order_of_falls/README.md) · [AB graph](workflows/005_AB_three_histories.json) · [BA graph](workflows/005_BA_three_histories.json) · [Node Manual](docs/NODE_MANUAL.md) · [Workflow Manual](docs/WORKFLOW_MANUAL.md).

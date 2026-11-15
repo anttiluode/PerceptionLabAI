@@ -83,13 +83,35 @@ python experiments\005_order_of_falls\run.py --upstream ..\PerceptionLab
 - `005_AB_slow_disconnected.json` / `005_BA_slow_disconnected.json`
 - `005_no_stimulus.json`
 
-**Before the first CI measurement:** all fading thresholds are provisional
-and the readout is untrained; the GUI graphs are useful for wiring inspection,
-but not yet a validated decoder. The automated runner performs *pooled open-loop
-calibration* across AB and BA and applies the same thresholds to all trials,
-without conditioning them on the hidden label.
+**After the headless run:** all seven original 005 GUI graphs now have their pooled open-loop calibration thresholds. The main AB/BA and C-return-off graphs contain the same **frame-360 trained readout**, whose held-out accuracy was 14/16. Passive/no-stimulus observer weights remain zero. The trained readout is diagnostic at its fitted observation time; the GUI graph itself has not been manually verified. See the measured report below.
 
 See also [Node Manual](../../docs/NODE_MANUAL.md) and
 [Workflow Manual](../../docs/WORKFLOW_MANUAL.md).
 
 **An oscillator is not memory of AB/BA by itself.**
+
+## Measured result, 15 November 2026
+
+[Complete original data and fitted models](../../results/005_order_of_falls.json) · [successful CI run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43695094816) · [frozen frame-360 model](../../results/005_frozen_readout_360.json).
+
+All seven 005 automated checks passed. Three fading units shared one original WaveField, but **C=.975 never fired in this initial configuration**. The A/B subsystem produced recurrent events after both external source pulses stopped.
+
+**Primary (original, unlimited numerical precision) combined six-feature readout:**
+
+| Observation | Recurrent | No feedback (passive) |
+|---|---:|---:|
+| Frame 160 | 15/16 | 16/16 |
+| Frame 360 | **14/16** | 16/16 |
+| Frame 650 | 15/16 | 16/16 |
+
+Thus there is **no advantage** for feedback over the passive field with unlimited numerical sensitivity. Source order itself already leaves extremely small but perfectly reproducible traces in the passive deterministic medium. This is a meaningful negative control.
+
+**Exploratory finite-resolution check:** A post-hoc observer floor zeroes traces below 1% of their own *open-loop trace peak* and spike memory below 0.001. At frame 650 the passive medium's largest traces were on the order of `10^-6`, below this floor. Under this observer specification, the recurrent combined readout and recurrent spike-history-only readout each scored **15/16 (93.75%)**, while passive scored **8/16 (50%)**. These are **different linear models fitted at each snapshot** using the same training examples, not one fixed readout tracking accuracy across all times.
+
+The frozen GUI readout is a single **frame-360** model fitted on all six features and scored 14/16 held-out. Accuracy at frame 650 from a separately fitted model must not be attributed to those exact frozen GUI coefficients.
+
+The source amplitudes, pulse widths, and timing gaps were matched within each AB/BA pair. Eight training pairs and eight different held-out pairs were used; the results come from one deterministic model, so neither standard-error claims nor biological generalization are warranted.
+
+**Exploratory 005b:** A separate [six-rate scan](../../results/005_C_recruitment.json) found a C=.93 setting where **all three units fired**. That three-active system was evaluated with [fresh held-out pairs](THREE_ACTIVE.md): recurrent feedback decoded only **10/16 at frame 650**, while removing C's return yielded **15/16**, and a passive field at the same finite resolution gave **8/16**. The extra active feedback made the linear order representation *less* accessible in this setting. Its own six GUI graphs are calibrated but have untrained observer weights.
+
+**Outcome:** 005 demonstrates how to turn the phrase "past caught in signal trains" into a falsifiable observable. It does not show that a three-neuron network learned order, that the order is stored exclusively in spikes, or that adding more nodes increases memory capacity.

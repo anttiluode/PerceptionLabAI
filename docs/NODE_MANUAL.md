@@ -85,3 +85,15 @@ Controls: `spike_decay`, `start_frame`, `bias`, `w0..w5`; changing a graph's dec
 
 **005 uses no new causal neuron.** It reuses three copies of FadingHistorySpikeNode with different decay constants (0.86/0.95/0.975), with two ordinary PulseSourceNodes delivering AB or BA via write_0 and write_3. See [005 experiment and controls](../experiments/005_order_of_falls/README.md).
 
+
+## 005 measured readout and its limits
+
+[Complete original receipt](../results/005_order_of_falls.json) · [Frozen frame-360 coefficients](../results/005_frozen_readout_360.json).
+
+The original 005 AB/BA GUI graphs now contain the **same fitted model** and pooled open-loop thresholds for all three fading units. The model was fitted to three trace values and three readout spike-memory values using eight training AB/BA pairs and scored **14/16 held-out examples at frame 360**. Its score is *not* independently validated for every later frame or a different wave configuration. Passive and no-source graph variants retain zero/untrained observer weights.
+
+With unlimited numerical precision, the passive field at frame 650 decoded **16/16**; with a post-hoc measurement floor (traces below **1%** of their own pooled open-loop peak; spike-memory values below **0.001**), its accuracy dropped to **8/16**, while the original recurrent unit readout was **15/16**. A classifier cannot be credited with physically meaningful memory when it amplifies differences near numerical zero.
+
+The original third unit (C decay .975) never emitted. The exploratory [C-decay scan](../results/005_C_recruitment.json) found **0.93** allowed recurrent firing in all three. However, [fresh held-out three-active follow-up](../experiments/005_order_of_falls/THREE_ACTIVE.md) scored **10/16** with C feedback, versus **15/16** when the C return edge was disconnected. All six three-active GUI control graphs deliberately keep **untrained** observer weights.
+
+**Node independence:** the `PopulationOrderReadoutNode` is an instrument, not a fourth recurrent neuron; its weights are trained offline, and it holds its own spike EMAs. A high decoding score here does not establish synaptic learning or a representation robust to arbitrary noise.

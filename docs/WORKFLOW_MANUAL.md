@@ -101,3 +101,22 @@ The fourth `PopulationOrderReadoutNode` initially has **zero weights**; a GUI di
 
 To run: `python experiments/005_order_of_falls/run.py --upstream PerceptionLab` from PerceptionLabAI, using the sibling host checkout if needed. Copy `nodes/population_order_readout_node.py` (and `nodes/fading_history_spike_node.py`) into the host `nodes/` folder and restart. [Node manual](NODE_MANUAL.md).
 
+
+## 005 current measured workflows and operating procedure
+
+**Original calibrated study (C=.975, silent):**
+
+- [AB fitted readout](../workflows/005_AB_three_histories.json) and [BA fitted readout](../workflows/005_BA_three_histories.json) carry a frozen linear probe trained for **frame 360** (14/16 held-out correct). Only warmup ordering differs between them.
+- [Passive AB](../workflows/005_AB_no_return.json), [passive BA](../workflows/005_BA_no_return.json), [C-return-off AB](../workflows/005_AB_slow_disconnected.json), [C-return-off BA](../workflows/005_BA_slow_disconnected.json), and [silent source](../workflows/005_no_stimulus.json) are controls. The passive and silent observer is untrained.
+
+**Exploratory three-active follow-up (C=.93):**
+
+- [Three-active AB](../workflows/005_ABC093_AB.json), [three-active BA](../workflows/005_ABC093_BA.json)
+- [C return disconnected AB](../workflows/005_ABC093_AB_no_C.json), [BA](../workflows/005_ABC093_BA_no_C.json)
+- [Passive AB](../workflows/005_ABC093_AB_passive.json), [BA](../workflows/005_ABC093_BA_passive.json)
+
+All six C=.93 graphs have valid pooled open-loop thresholds, but **the observer is deliberately untrained**. Use the signal plots and node counters to see C actually participating; do not transplant the original frozen C=.975 classifier. This follow-up scored only **10/16** at frame 650 with all feedback connected, but **15/16** when C's return was disconnected. The [six-rate exploratory scan](../results/005_C_recruitment.json) and [fresh held-out follow-up](../experiments/005_order_of_falls/THREE_ACTIVE.md) preserve the negative result.
+
+For local Windows use, pull `PerceptionLabAI/main`, copy **both** `nodes/fading_history_spike_node.py` and `nodes/population_order_readout_node.py` to the upstream PerceptionLab `nodes/` folder, fully restart the host, then open any `005_*.json` from this workshop. The actual wave field must have real 96×96 state arrays. The GUI's file-loader path and the automatic CI tests are distinct; GUI playback of 005 still needs local verification.
+
+**Meaning of the result:** the readout is a small externally trained classifier over a deterministic system of fixed weights. Order information can survive as recurrent dynamics after the passive wave becomes too small to read at the chosen resolution; three feedback units are not automatically better than two. This is not neural learning or evidence of biological memory capacity.
