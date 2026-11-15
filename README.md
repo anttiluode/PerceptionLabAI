@@ -6,7 +6,7 @@
 
 After 006's reward-guided edge failed twice, 007 removes the reward, the reader and the labels. A's return edge watches only how often A fires and moves its own weight toward a target rate. Starting from 1.00, where A silences B, the weight falls to **0.41**, B starts firing, and the two take turns at about 104 frames. A frozen gate at 1.00 leaves B silent. Five starting weights reach the same place.
 
-**Limits kept visible:** with B's return disconnected the same rule lets A's loop die and it never restarts; the planned anti-homeostatic control from 0.30 did not discriminate; nothing here measures memory; the target rate is hand-chosen; GUI playback is not yet verified. The fixed-weight sweep also shows that turn-taking continues at A weight 0.00, so A's return speeds the pattern up but is not needed for it.
+**Limits kept visible:** with B's return disconnected the same rule lets A's loop die and it never restarts; the planned anti-homeostatic control from 0.30 did not discriminate; nothing here measures memory; the target rate is hand-chosen. The both-homeostatic graph has been observed in the GUI (A weight falling to 0.36, B starting to fire); the other four graphs are headless only. The fixed-weight sweep also shows that turn-taking continues at A weight 0.00, so A's return speeds the pattern up but is not needed for it.
 
 ## 006 / 006b: a plastic return is not yet useful learning
 
