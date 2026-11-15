@@ -5,11 +5,11 @@
 **004 completed headless investigation:** Two differently fading units in one shared WaveField switch between **suppression** (A feedback ≥0.50, B silent) and **mutual alternating regeneration** (A feedback 0.15–0.45). In a 1,800-frame run, A-return 0.30 gave repeated A/B alternation (15 spikes each), and disconnecting B's return killed both. This is a controlled dynamical phenomenon, not learned behaviour. **The 004 GUI still needs local verification.**
 
 ---
-## Experiment 003 — CURRENT WORKFLOW (PerceptionLabAI/main)
+## Earlier experiment 003 — the first feedback loop
 
 [Open saved graph](workflows/003_fading_feedback_wave.json) · [Fading History Spike node](nodes/fading_history_spike_node.py) · [research/results](experiments/003_fade_closed_loop/README.md).
 
-**Local Windows update uses TWO repositories.** The wave-size fix is now directly in `anttiluode/PerceptionLab` **main**, and this new experiment already lives in `anttiluode/PerceptionLabAI` **main**. Pull both:
+**Local Windows update uses TWO repositories.** The wave-size fix is now directly in `anttiluode/PerceptionLab` **main**, and the 003/004 workshop experiments live in `anttiluode/PerceptionLabAI` **main**. Pull both:
 
 ```bat
 cd /d D:\anttiluode\PerceptionLab
