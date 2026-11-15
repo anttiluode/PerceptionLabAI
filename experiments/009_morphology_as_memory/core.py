@@ -31,7 +31,8 @@ def uniform_structure(budget=1.0):
 
 def build_graph(structure, thresholds, stim=None, probe_site=None, learn=1, params=None, stim_amp=0.12):
     """stim: list of (site_letter, frame, scale). probe_site: write index for a single neutral pulse at frame 20."""
-    P = {"budget": 1.0, "learning_rate": 0.05, "trace_decay": 0.97, "prune_threshold": 0.02}
+    P = {"budget": 1.0, "learning_rate": 0.05, "trace_decay": 0.97, "prune_threshold": 0.02,
+         "harden_rate": 0.0, "harden_mode": 1}
     P.update(params or {})
     nodes, edges = [], []
     srcs = {"A": 0, "B": 1}
@@ -59,6 +60,8 @@ def build_graph(structure, thresholds, stim=None, probe_site=None, learn=1, para
         gid = GROW_IDS[k]
         cfg = dict(P); cfg.update({"node_title": "Unit %d branches" % k, "learn_enabled": int(learn),
                                    "weights": list(structure["weights"][k]), "alive": list(structure["alive"][k])})
+        if "hardness" in structure:
+            cfg["hardness"] = list(structure["hardness"][k])
         nodes.append({"id": gid, "class_name": "GrowingReturnNode", "pos_x": 360.0, "pos_y": -310.0 + 200 * k,
                       "width": 325.0, "height": 170.0, "config": cfg, "custom_state_file": None})
         edges.append(edge(uid, "pulse", gid, "pre_spike"))
@@ -128,7 +131,8 @@ def simulate(graph, upstream, steps, snapshots=(), spike_decay=0.92, windows=Non
         if tick in snapshots:
             feats[tick] = [float(obj[u].trace) for u in UNIT_IDS] + list(ema)
     structure = {"weights": [list(map(float, obj[g].weights)) for g in GROW_IDS],
-                 "alive": [list(map(int, obj[g].alive)) for g in GROW_IDS]}
+                 "alive": [list(map(int, obj[g].alive)) for g in GROW_IDS],
+                 "hardness": [list(map(float, obj[g].hardness)) for g in GROW_IDS]}
     return {"structure": structure, "spikes": {str(u): spikes[u] for u in UNIT_IDS}, "features": feats,
             "clipped_frames": clip, "peak_trace": peak_trace,
             "site_energy": {k: [float(x) for x in v] for k, v in site_energy.items()}}

@@ -17,6 +17,17 @@ When the unit fires:
 
 Output on every frame: out_s = pre_spike * w_s.
 
+Optional hardening (experiment 010, off by default): each branch keeps a hardness h_s that only
+ever grows. With harden_mode = 1 a branch hardens by its own weight every time the unit fires
+(the more it carries, the harder it gets); with harden_mode = 2 every branch hardens by the same
+amount per firing (plain ageing, used as a control). A branch's plasticity is
+
+    g_s = 1 / (1 + harden_rate * h_s)
+
+and both its growth step and its share of the budget correction are multiplied by g_s, so a
+hard branch neither grows, shrinks nor gives up weight easily. With harden_rate = 0 the node
+behaves exactly as in experiment 009.
+
 Everything the rule uses is local to the node: its own unit's pulse and the
 field value at each branch tip. There is no reward, label or reader.
 
@@ -57,6 +68,9 @@ class GrowingReturnNode(BaseNode):
         self.trace_decay = 0.97
         self.prune_threshold = 0.02
         self.learn_enabled = 1
+        self.harden_rate = 0.0        # 0 = no hardening (experiment 009 behaviour)
+        self.harden_mode = 1          # 1 = by use (own weight per firing), 2 = by age (equal per firing)
+        self.hardness = [0.0] * N_SITES
         self.weights = [self.budget / N_SITES] * N_SITES
         self.alive = [1] * N_SITES
         self.site_trace = [0.0] * N_SITES
@@ -64,11 +78,20 @@ class GrowingReturnNode(BaseNode):
         self.update_count = 0
         self.display_img = np.zeros((120, 310, 3), np.uint8)
 
+    def _plasticity(self):
+        return 1.0 / (1.0 + max(0.0, float(self.harden_rate)) * np.asarray(self.hardness, dtype=float))
+
     def _renormalise(self):
+        """Bring the living weights back to the budget; soft branches absorb the correction."""
         w = np.maximum(0.0, np.asarray(self.weights, dtype=float)) * np.asarray(self.alive, dtype=float)
-        total = float(w.sum())
-        if total > 1e-12:
-            w *= float(self.budget) / total
+        g = self._plasticity()
+        for _ in range(4):
+            excess = float(w.sum()) - float(self.budget)
+            share = g * w
+            tot = float(share.sum())
+            if abs(excess) < 1e-12 or tot < 1e-12:
+                break
+            w = np.maximum(0.0, w - excess * share / tot)
         self.weights = [float(x) for x in w]
 
     def step(self):
@@ -89,7 +112,8 @@ class GrowingReturnNode(BaseNode):
             if tot > 1e-12 and alive.sum() > 1:
                 p = e * alive / tot
                 mean_p = float(p.sum() / alive.sum())
-                w = np.asarray(self.weights, dtype=float) + float(self.learning_rate) * (p - mean_p) * alive
+                g = self._plasticity()
+                w = np.asarray(self.weights, dtype=float) + float(self.learning_rate) * g * (p - mean_p) * alive
                 w = np.maximum(0.0, w)
                 dead = (w < float(self.prune_threshold)) & (alive > 0)
                 if dead.sum() < alive.sum():          # never prune the last branches all at once
@@ -98,6 +122,12 @@ class GrowingReturnNode(BaseNode):
                 self.weights = [float(x) for x in w]
                 self._renormalise()
                 self.update_count += 1
+                if float(self.harden_rate) > 0.0:
+                    if int(self.harden_mode) == 2:
+                        gain = np.asarray(self.alive, dtype=float) * float(self.budget) / max(1.0, float(sum(self.alive)))
+                    else:
+                        gain = np.asarray(self.weights, dtype=float)
+                    self.hardness = [float(h + x) for h, x in zip(self.hardness, gain)]
 
         self.out = [pre * self.weights[s] for s in range(N_SITES)]
         self._render()
@@ -135,13 +165,15 @@ class GrowingReturnNode(BaseNode):
                 ("Learning rate", "learning_rate", self.learning_rate, "float"),
                 ("Site trace decay", "trace_decay", self.trace_decay, "float"),
                 ("Prune threshold", "prune_threshold", self.prune_threshold, "float"),
-                ("Enable growth (1/0)", "learn_enabled", self.learn_enabled, None)]
+                ("Enable growth (1/0)", "learn_enabled", self.learn_enabled, None),
+                ("Hardening rate (0 = off)", "harden_rate", self.harden_rate, "float"),
+                ("Hardening mode (1 use, 2 age)", "harden_mode", self.harden_mode, None)]
         for s in range(N_SITES):
             opts.append(("Weight to site %d" % s, "w%d" % s, self.weights[s], "float"))
         return opts
 
     def set_config_options(self, options):
-        for f in ("budget", "learning_rate", "trace_decay", "prune_threshold"):
+        for f in ("budget", "learning_rate", "trace_decay", "prune_threshold", "harden_rate"):
             if f in options:
                 setattr(self, f, float(options[f]))
         if "learn_enabled" in options:
@@ -151,5 +183,9 @@ class GrowingReturnNode(BaseNode):
         for s in range(N_SITES):
             if "w%d" % s in options:
                 self.weights[s] = float(options["w%d" % s])
+        if "harden_mode" in options:
+            self.harden_mode = int(float(options["harden_mode"]))
+        if "hardness" in options:
+            self.hardness = [float(x) for x in options["hardness"]][:N_SITES]
         if "alive" in options:
             self.alive = [int(a) for a in options["alive"]][:N_SITES]
