@@ -1,0 +1,31 @@
+name: 006 reward-selected return / heldout
+on:
+  push:
+    paths:
+      - "experiments/006_reward_selected_return/**"
+      - "nodes/plastic_return_gate_node.py"
+      - "tests/test_006_reward_selection.py"
+      - "workflows/006*.json"
+      - ".github/workflows/006-reward-selected-return.yml"
+  workflow_dispatch:
+jobs:
+  test-and-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -p test_006_reward_selection.py -v
+      - run: python experiments/006_reward_selected_return/run.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 006-reward-selected-heldout
+          path: results/006_reward_selected_return.json
