@@ -43,6 +43,13 @@ class Test006(unittest.TestCase):
             self.assertEqual(obj[2].field.shape,(96,96))
             self.assertEqual(obj[7].inputs["pre_spike"],"signal")
             self.assertEqual(obj[7].outputs["signal"],"signal")
+            for read,idx in (("read_1",3),("read_3",4),("read_5",5)):
+                self.assertTrue(any(e["from_node_id"]==2 and
+                    e["from_port"]==read and e["to_node_id"]==idx
+                    and e["to_port"]=="signal_in" for e in graph["edges"]),
+                    "Causal field-to-fade input missing: "+read)
+            self.assertFalse(any(e["to_port"]=="signal_in" and
+                e["to_node_id"] not in (3,4,5) for e in graph["edges"]))
             self.assertTrue(any(e["from_node_id"]==5 and
                                 e["to_node_id"]==7 and
                                 e["from_port"]=="pulse" for e in graph["edges"]))
