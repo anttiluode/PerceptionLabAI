@@ -62,6 +62,12 @@ class FadingPulseTests(unittest.TestCase):
                             bootstrap=False,read=1)
         self.assertEqual(no_boot["total_spikes"],0)
 
+    def test_workflow_matches_open_loop_calibration(self):
+        graph=json.loads((ROOT/"workflows"/"003_fading_feedback_wave.json").read_text())
+        n=next(x for x in graph["nodes"] if x["class_name"]=="FadingHistorySpikeNode")
+        self.assertAlmostEqual(n["config"]["arm_threshold"],.72201012,places=5)
+        self.assertAlmostEqual(n["config"]["release_threshold"],.320893387,places=5)
+
     def test_graph_ports_are_real_and_have_matching_types(self):
         upstream=ROOT/"PerceptionLab"/"nodes"
         if not upstream.exists():

@@ -52,8 +52,8 @@
       "config": {
         "node_title": "Fading History Spike",
         "decay": 0.9,
-        "arm_threshold": 0.2,
-        "release_threshold": 0.09,
+        "arm_threshold": 0.72201012,
+        "release_threshold": 0.320893387,
         "pulse_amplitude": 2,
         "refractory": 3,
         "enabled": 1

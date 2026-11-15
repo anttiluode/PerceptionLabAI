@@ -69,8 +69,8 @@ fresh medium and oscillator state.
 The workbench GUI graph is at
 `workflows/003_fading_feedback_wave.json`. Copy the new node
 `nodes/fading_history_spike_node.py` to PerceptionLab's `nodes/`
-folder, then load the JSON graph. Its thresholds must be updated to
-the measured calibration after headless results are available.
+folder, then load the JSON graph. Its thresholds are fixed from the 96×96 open-loop calibration:
+arm=0.72201012 and release=0.320893387 for read_1.
 The GUI path has not yet been manually inspected.
 
 ## Important causal boundaries
@@ -84,3 +84,22 @@ control. Even a beautiful periodic waveform can be a threshold artifact
 or a residual reflection, so report pulse times and late event counts.
 
 **No result is claimed here until CI has run.**
+
+## First actual CI measurement (15 November 2026)
+
+[GitHub Actions first run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43688727541): **17 automated tests passed**. A separate open-loop pulse calibration fixed the reference thresholds (trace peak 1.604466933; arm 0.72201012; release 0.320893387). The real upstream 96×96 wave was run for 550 frames.
+
+| Configuration | Spikes total / last half | Late average interspike interval |
+|---|---:|---:|
+| Read_1, decay .90, speed .50 | 14 / 8 | 36 frames, CV 0 |
+| Farther read_2 | 6 / 3 | 82.5 frames |
+| Wave speed .35 | 12 / 7 | 43 frames |
+| Damping .035 | 12 / 7 | 44 frames |
+| Slower memory fade, decay .96 | 5 / 3 | 104 frames |
+| **Return wire disconnected** | 1 / 0 | None |
+| **No startup pulse** | 0 / 0 | None |
+| **Unit disabled** | 0 / 0 | None |
+
+This is a **constructed regenerative-feedback oscillator**, using a one-tick pulse generated after the trace crosses the release threshold. The pulse actively supplies energy to the field; damping and travel delay are not the only determinants of the cycle. The result does **not** demonstrate real action potential physiology, a learned network, or multimodal processing.
+
+Follow-up pre-registered controls: place the read at write_0 (zero path), cut the feedback return halfway, reduce return amplitude, and raise damping. The full initial CI artifact records raw spike times and all outputs. 

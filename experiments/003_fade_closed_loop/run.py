@@ -14,6 +14,8 @@ import pathlib
 import statistics
 import sys
 
+import numpy as np
+
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tests"))
 from host_shim import load
@@ -70,7 +72,8 @@ def instruments(mods, size=96, read=1, speed=0.5, damping=0.006,
 def one_run(mods, thresholds, *,
             size=96, read=1, speed=0.5, damping=0.006, decay=0.90,
             steps=550, feedback=True, bootstrap=True, enabled=True,
-            pulse_amplitude=2.0, refractory=3):
+            pulse_amplitude=2.0, refractory=3,
+            feedback_until=None):
     Pulse, Wave, Fade = mods
     source = Pulse(period=0, width=2, amplitude=1.0 if bootstrap else 0.0)
     source.warmup = 18
@@ -90,6 +93,8 @@ def one_run(mods, thresholds, *,
     tap_abs = []
     trace_peak = 0.0
     raw_pulse_frames = 0
+    saturated_steps = 0
+    largest_field_abs = 0.0
 
     for t in range(steps):
         # All edges deliver PREVIOUS-TICK values; never hand the field an
@@ -104,7 +109,7 @@ def one_run(mods, thresholds, *,
 
         field.pre_step()
         field.set_input("write_0", prev_source)
-        if feedback:
+        if feedback and (feedback_until is None or t < feedback_until):
             field.set_input("write_0", prev_feedback)
         field.step()
 
@@ -112,6 +117,9 @@ def one_run(mods, thresholds, *,
         source.step()
 
         powers.append(float(field.get_output("energy")))
+        biggest = float(np.max(np.abs(field.field)))
+        largest_field_abs = max(largest_field_abs, biggest)
+        saturated_steps += int(biggest >= 3.9998)
         tap_abs.append(abs(float(prev_wave_read)))
         trace_peak = max(trace_peak, unit.trace)
         if unit.pulse:
@@ -136,6 +144,8 @@ def one_run(mods, thresholds, *,
         "speed": speed,
         "damping": damping,
         "decay": decay,
+        "feedback_until": feedback_until,
+        "pulse_amplitude": pulse_amplitude,
         "steps": steps,
         "total_spikes": len(times),
         "late_spikes": len(late_times),
@@ -146,6 +156,11 @@ def one_run(mods, thresholds, *,
         "late_isi_cv": round_(cv),
         "last_100_mean_energy": round_(statistics.mean(powers[-100:])),
         "last_100_max_abs_tap": round_(max(tap_abs[-100:])),
+        "largest_abs_field": round_(largest_field_abs),
+        "saturated_steps": saturated_steps,
+        "spikes_100_frames_after_cutoff": (len([x for x in times
+            if x >= feedback_until + 100]) if feedback_until is not None
+            else None),
         "trace_peak": round_(trace_peak),
         "intervals_first_20": diffs[:20],
         "recurrence_criterion": len(late_times) >= 3 and
@@ -157,9 +172,11 @@ def sweep(upstream, size=96, steps=550):
     mods = classes(upstream)
     setups = [
         ("reference", dict(read=1, speed=.5, damping=.006, decay=.90)),
+        ("same_aperture", dict(read=0, speed=.5, damping=.006, decay=.90)),
         ("farther_read", dict(read=2, speed=.5, damping=.006, decay=.90)),
         ("slower_wave", dict(read=1, speed=.35, damping=.006, decay=.90)),
         ("higher_damping", dict(read=1, speed=.5, damping=.035, decay=.90)),
+        ("very_high_damping", dict(read=1, speed=.5, damping=.10, decay=.90)),
         ("longer_trace", dict(read=1, speed=.5, damping=.006, decay=.96)),
     ]
     trials = {}
@@ -177,6 +194,10 @@ def sweep(upstream, size=96, steps=550):
         "no_feedback": one_run(mods,refcal,size=size,steps=steps,feedback=False,**standard),
         "no_bootstrap": one_run(mods,refcal,size=size,steps=steps,feedback=True,bootstrap=False,**standard),
         "unit_disabled": one_run(mods,refcal,size=size,steps=steps,feedback=True,enabled=False,**standard),
+        "wire_cut_at_half": one_run(mods,refcal,size=size,steps=steps,
+            feedback=True,feedback_until=steps//2,**standard),
+        "weak_return": one_run(mods,refcal,size=size,steps=steps,
+            feedback=True,pulse_amplitude=.25,**standard),
     }
     return {
         "experiment":"003_fade_closed_loop",
@@ -209,7 +230,9 @@ if __name__ == "__main__":
         "summary":{
             key:{k:v for k,v in x.items() if k in (
                 "total_spikes","late_spikes","last_spike","late_mean_isi_frames",
-                "late_isi_cv","last_100_mean_energy","recurrence_criterion")}
+                "late_isi_cv","last_100_mean_energy","recurrence_criterion",
+                "spikes_100_frames_after_cutoff","saturated_steps",
+                "largest_abs_field")}
             for key,x in {**result["trials"], **result["controls"]}.items()
         }
     },indent=2))
