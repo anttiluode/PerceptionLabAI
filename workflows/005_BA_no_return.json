@@ -67,8 +67,8 @@
       "config": {
         "node_title": "Fast 0.86 / A",
         "decay": 0.86,
-        "arm_threshold": 0.10849628199708476,
-        "release_threshold": 0.04822056977648212,
+        "arm_threshold": 0.12447380548826721,
+        "release_threshold": 0.05532169132811876,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
@@ -84,8 +84,8 @@
       "config": {
         "node_title": "Medium 0.95 / B",
         "decay": 0.95,
-        "arm_threshold": 0.033508825549428974,
-        "release_threshold": 0.014892811355301766,
+        "arm_threshold": 0.10120400337522525,
+        "release_threshold": 0.04497955705565567,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
@@ -101,8 +101,8 @@
       "config": {
         "node_title": "Slow 0.975 / C",
         "decay": 0.975,
-        "arm_threshold": 0.02,
-        "release_threshold": 0.009,
+        "arm_threshold": 0.03571520091555566,
+        "release_threshold": 0.01587342262913585,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
