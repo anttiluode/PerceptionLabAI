@@ -32,10 +32,10 @@ def classes(upstream):
 
 
 def instruments(mods, size=96, read=1, speed=0.5, damping=0.006,
-                decay=0.90, steps=230):
+                decay=0.90, steps=230, bootstrap_amplitude=1.0):
     """Measure an exogenous *single pulse* with feedback completely absent."""
     Pulse, Wave, _ = mods
-    p = Pulse(period=0, width=2, amplitude=1.0)
+    p = Pulse(period=0, width=2, amplitude=bootstrap_amplitude)
     p.warmup = 18
     w = Wave(size=size)
     w.speed = speed
@@ -73,9 +73,10 @@ def one_run(mods, thresholds, *,
             size=96, read=1, speed=0.5, damping=0.006, decay=0.90,
             steps=550, feedback=True, bootstrap=True, enabled=True,
             pulse_amplitude=2.0, refractory=3,
-            feedback_until=None):
+            feedback_until=None, bootstrap_amplitude=1.0):
     Pulse, Wave, Fade = mods
-    source = Pulse(period=0, width=2, amplitude=1.0 if bootstrap else 0.0)
+    source = Pulse(period=0, width=2,
+                   amplitude=bootstrap_amplitude if bootstrap else 0.0)
     source.warmup = 18
     field = Wave(size=size)
     field.speed = float(speed)
@@ -146,6 +147,7 @@ def one_run(mods, thresholds, *,
         "decay": decay,
         "feedback_until": feedback_until,
         "pulse_amplitude": pulse_amplitude,
+        "bootstrap_amplitude": bootstrap_amplitude,
         "steps": steps,
         "total_spikes": len(times),
         "late_spikes": len(late_times),
@@ -178,11 +180,14 @@ def sweep(upstream, size=96, steps=550):
         ("higher_damping", dict(read=1, speed=.5, damping=.035, decay=.90)),
         ("very_high_damping", dict(read=1, speed=.5, damping=.10, decay=.90)),
         ("longer_trace", dict(read=1, speed=.5, damping=.006, decay=.96)),
+        ("low_amplitude", dict(read=1, speed=.5, damping=.006,
+                               decay=.90, bootstrap_amplitude=.12, pulse_amplitude=.24)),
     ]
     trials = {}
     cal = {}
     for name,params in setups:
-        settings = instruments(mods, size=size, **params)
+        settings = instruments(mods, size=size,
+            **{k:v for k,v in params.items() if k != "pulse_amplitude"})
         frozen = {key:settings[key] for key in
                   ("trace_peak","wave_peak","arm_threshold","release_threshold")}
         cal[name] = {k:round(float(v),9) for k,v in frozen.items()}
@@ -190,6 +195,9 @@ def sweep(upstream, size=96, steps=550):
     # Controls share the REFERENCE calibration and source/field parameters.
     standard = dict(setups[0][1])
     refcal = instruments(mods,size=size,**standard)
+    lowparams = dict(setups[-1][1])
+    lowcal = instruments(mods,size=size,
+            **{k:v for k,v in lowparams.items() if k != "pulse_amplitude"})
     controls = {
         "no_feedback": one_run(mods,refcal,size=size,steps=steps,feedback=False,**standard),
         "no_bootstrap": one_run(mods,refcal,size=size,steps=steps,feedback=True,bootstrap=False,**standard),
@@ -198,6 +206,8 @@ def sweep(upstream, size=96, steps=550):
             feedback=True,feedback_until=steps//2,**standard),
         "weak_return": one_run(mods,refcal,size=size,steps=steps,
             feedback=True,pulse_amplitude=.25,**standard),
+        "low_amplitude_no_feedback": one_run(mods,lowcal,
+            size=size,steps=steps,feedback=False,**lowparams),
     }
     return {
         "experiment":"003_fade_closed_loop",

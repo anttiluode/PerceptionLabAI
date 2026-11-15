@@ -103,3 +103,20 @@ or a residual reflection, so report pulse times and late event counts.
 This is a **constructed regenerative-feedback oscillator**, using a one-tick pulse generated after the trace crosses the release threshold. The pulse actively supplies energy to the field; damping and travel delay are not the only determinants of the cycle. The result does **not** demonstrate real action potential physiology, a learned network, or multimodal processing.
 
 Follow-up pre-registered controls: place the read at write_0 (zero path), cut the feedback return halfway, reduce return amplitude, and raise damping. The full initial CI artifact records raw spike times and all outputs. 
+
+## Stronger instrument control: WaveField amplitude clipping
+
+The WaveField itself clips its field and velocity state to ±4. The first
+reference run reached the ±4 field clamp for **100/550 frames**;
+a single open-loop bootstrap also hit the clamp briefly. The
+reported 36-frame rhythm is therefore **not demonstrated to be a
+purely linear-wave phenomenon**.
+
+The next preregistered comparison retains the same `pulse/boot=2`
+ratio and geometry but scales both pulse magnitudes down by ≈8.3×:
+bootstrap amplitude **0.12**, feedback pulse **0.24**, with thresholds
+calibrated separately on the smaller, open-loop stimulus. Record
+the number of frames in which `abs(field)` reaches 3.9998.
+If the low-amplitude loop still oscillates while showing zero
+saturated frames, the mechanism is not dependent on the WaveField
+amplitude clamp. If it fails, keep the negative result.
