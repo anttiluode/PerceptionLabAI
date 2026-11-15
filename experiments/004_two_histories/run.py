@@ -111,10 +111,17 @@ def advance(obj,edges,steps,cut_b_at=None,record_energy=True):
     maximum_field=0.
     saturated_frames=0
     energy_samples=[]
+    # Renderers (IDs >=4) only *observe* the causal subsystem. Skipping
+    # their expensive scope/plot redraws in headless sweeps does not alter
+    # inputs or state of source, wave or either fade unit. The saved GUI
+    # graph still runs all nodes; tests check their real port wiring.
+    causal={i:obj[i] for i in (0,1,2,3)}
     for tick in range(steps):
-        for n in obj.values():
+        for n in causal.values():
             n.pre_step()
         for e in edges:
+            if e["to_node_id"] not in causal:
+                continue
             if (cut_b_at is not None and tick>=cut_b_at and
                 e["from_node_id"]==3 and e["to_node_id"]==1 and
                 e["from_port"]=="pulse"):
@@ -125,7 +132,7 @@ def advance(obj,edges,steps,cut_b_at=None,record_energy=True):
                 dst.set_input(e["to_port"],val,
                               src.outputs[e["from_port"]],
                               e.get("learned_weight",1.0))
-        for n in obj.values():
+        for n in causal.values():
             n.step()
         for i in (2,3):
             unit=obj[i]
