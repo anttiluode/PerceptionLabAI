@@ -116,15 +116,15 @@
       "width": 350,
       "height": 155,
       "config": {
-        "node_title": "Order readout / untrained",
+        "node_title": "FROZEN order probe @360 (87.5% held-out)",
         "spike_decay": 0.92,
-        "start_frame": 180,
-        "bias": 0,
-        "w0": 0,
-        "w1": 0,
-        "w2": 0,
-        "w3": 0,
-        "w4": 0,
+        "start_frame": 360,
+        "bias": -4.736272350712311,
+        "w0": 1.5147183173686507,
+        "w1": -0.6069789606695473,
+        "w2": 49.15336372802083,
+        "w3": 133.3325450606663,
+        "w4": 25.49708346783128,
         "w5": 0
       }
     },

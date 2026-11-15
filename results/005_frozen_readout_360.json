@@ -1,0 +1,43 @@
+{
+  "feature_set": "all_six",
+  "weights": [
+    1.5147183173686507,
+    -0.6069789606695473,
+    49.15336372802083,
+    133.3325450606663,
+    25.49708346783128,
+    0
+  ],
+  "bias": -4.736272350712311,
+  "train_mean": [
+    0.07226779618134035,
+    0.07809872009346484,
+    0.05935203278691283,
+    0.00987229151129845,
+    0.017278896554328887,
+    0
+  ],
+  "train_std": [
+    0.06865376117826444,
+    0.033945953907331475,
+    0.0077946934851479055,
+    0.007753603874026953,
+    0.0256319955067011,
+    0.000001
+  ],
+  "frame": 360,
+  "source_run": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43695094816",
+  "heldout": {
+    "balanced_accuracy": 0.875,
+    "both_orders_correct_pairs": 6,
+    "pairs": 8,
+    "mean_labelled_margin": 0.967293
+  },
+  "training": {
+    "balanced_accuracy": 1,
+    "both_orders_correct_pairs": 8,
+    "pairs": 8,
+    "mean_labelled_margin": 0.797545
+  },
+  "meaning": "Classify AB vs BA at observation frame 360 using only 3 causal trace outputs plus 3 readout spike EWMAs; linear model trained externally on 8 AB and 8 BA trials. Any other time/model is unvalidated."
+}

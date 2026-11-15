@@ -78,7 +78,12 @@ class Test005(unittest.TestCase):
         self.assertFalse(any(e["from_node_id"]==6 and e["to_node_id"]==2
                              for e in g["edges"]))
         self.assertEqual(r.get_output("ready"),0.0)
-        self.assertTrue(all(v==0 for v in r.weights))
+        self.assertTrue(any(abs(v)>1e-8 for v in r.weights))
+        self.assertEqual(r.start_frame,360)
+        other=mod.instantiate(mod.read_graph("feedback","BA"),self.upstream)[6]
+        self.assertEqual(r.weights,other.weights)
+        passive=mod.instantiate(mod.read_graph("passive","AB"),self.upstream)[6]
+        self.assertTrue(all(v==0 for v in passive.weights))
         self.assertTrue(all(name in r.inputs for name in
                              ("trace_0","trace_1","trace_2","spike_0","spike_1","spike_2")))
 
