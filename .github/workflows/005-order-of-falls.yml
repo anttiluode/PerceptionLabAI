@@ -1,0 +1,31 @@
+name: 005 order of falls held-out decoding
+on:
+  push:
+    paths:
+      - "nodes/population_order_readout_node.py"
+      - "experiments/005_order_of_falls/**"
+      - "tests/test_005_order_of_falls.py"
+      - "workflows/005*.json"
+      - ".github/workflows/005-order-of-falls.yml"
+  workflow_dispatch:
+jobs:
+  paired-order-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -p test_005_order_of_falls.py -v
+      - run: python experiments/005_order_of_falls/run.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: experiment-005-ab-ba-heldout
+          path: results/005_order_of_falls.json
