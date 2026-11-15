@@ -125,7 +125,7 @@ With a separate sibling PerceptionLab checkout, instead use
 
 **GUI:** copy `nodes\fading_history_spike_node.py` into the local
 PerceptionLab `nodes` folder, restart PerceptionLab, and open
-`workflows\004_two_fades_one_field.json`. All seven workflow configurations now contain **measured open-loop calibration thresholds** from the CI reference run. The Wave Field must show ~4.9 frames per gap on 96×96.
+`workflows\004_two_fades_one_field.json`. All nine workflow configurations now contain **measured open-loop calibration thresholds** from the CI reference run. The Wave Field must show ~4.9 frames per gap on 96×96.
 All variants are graphs loadable in the current host.
 
 ## Status
@@ -151,6 +151,6 @@ All cases recorded **zero field-clipping frames**. The faster-decay identity was
 
 **Interpretation limit:** We have evidence that activity from the fast unit is associated with silence in the slower one; B can fire alone but not while A is continuously regenerating the wave. It is *consistent* with A keeping B's leaky trace above the lower release threshold. The first sweep did **not** directly test B's trace against that threshold or rescue B by disabling A; no phase-locking measurement is meaningful when B emits no spikes.
 
-**Follow-up implemented:** the runner now cuts **A's** return halfway through, varies its return weight (0.25/0.5/0.75), and records B's late trace min/mean/max, armed fraction, and fraction above the release threshold. Compare rescued B spikes to B-only. These new measurements must be inspected before promoting a mechanism claim. Additional GUI validation is still pending.
+**Follow-up measured:** cutting A's return halfway rescued B (two spikes); a 0.15–0.45 A return produced alternating events; at 0.50 B was fully suppressed. B's late trace remained above release 100% of the time with full A strength. See the later sections for the 1,800-frame check and the weak-A/no-B-return causal control. GUI validation of 004 is still pending.
 
 Measured GUI thresholds for the base graph: A arm **0.10849628**, release **0.04822057**; B arm **0.03350883**, release **0.01489281**. Swapped-rate and swapped-site graphs use their respective independent open-loop calibration values, not these base numbers.
