@@ -1,5 +1,26 @@
 # PerceptionLabAI — the experimental workshop
 
+## Experiment 003 — CURRENT WORKFLOW (PerceptionLabAI/main)
+
+[Open saved graph](workflows/003_fading_feedback_wave.json) · [Fading History Spike node](nodes/fading_history_spike_node.py) · [research/results](experiments/003_fade_closed_loop/README.md).
+
+**Local Windows update uses TWO repositories.** The wave-size fix is now directly in `anttiluode/PerceptionLab` **main**, and this new experiment already lives in `anttiluode/PerceptionLabAI` **main**. Pull both:
+
+```bat
+cd /d D:\anttiluode\PerceptionLab
+git pull origin main
+cd /d D:\anttiluode\PerceptionLabAI
+git pull origin main
+copy /Y nodes\fading_history_spike_node.py ..\PerceptionLab\nodes\
+```
+
+**Restart PerceptionLab completely** to reload the Python node classes.
+Open `D:\anttiluode\PerceptionLabAI\workflows\003_fading_feedback_wave.json` in PerceptionLab's Load dialog. With the fixed 96×96 field, the Wave Field graphic should show **predicted lag ~4.9 frames/gap**, not **13.2**. (13.2 means the old 256×256 arrays are still in use.) The reference headless loop emitted 14 spikes in 550 frames, but the user-observed GUI run before the fix stopped; verify the interactive behavior anew.
+
+The [host-style graph replay test](tests/test_graph003_host_replay.py) now tracks `PerceptionLab/main`, not a temporary fix branch. **For new work in this shared workshop, edit `main` directly by default as requested by the maintainer; do not leave finished work stranded in a feature branch.** Other contributors may still use PRs when appropriate.
+
+---
+
 PerceptionLabAI is a collaborative **staging area** for small, falsifiable PerceptionLab experiments. The upstream library is [PerceptionLab](https://github.com/anttiluode/PerceptionLab); the historical inventory and audit live in [PerceptionLabNodes](https://github.com/anttiluode/PerceptionLabNodes).
 
 ## The working agreement
@@ -11,7 +32,7 @@ PerceptionLabAI is a collaborative **staging area** for small, falsifiable Perce
 5. **Respect timing.** PerceptionLab transfers previous-step outputs before advancing all nodes: ordinary wired edges introduce a tick. Document graph timing and sample alignment.
 6. **Reproduce or do not promote.** Report the environment, dependency and exact upstream revision used. A passing unit test alone does not prove a scientific claim.
 7. **Keep failure evidence.** Do not erase negative runs. If a result changes, add a correction rather than rewriting history.
-8. **Contributors are welcome.** Humans and AI collaborators use separate branches/PRs, explain their model and tests, and never overwrite another contributor's work without review.
+8. **Contributors are welcome.** Humans and AI collaborators explain their model and tests. Antti's direct experiment updates go on `main` by default; outside contributors can use branches/PRs for review. Never overwrite another person's unreviewed work.
 9. **Upstream is reviewed.** Once an experiment has a working node, saved `graph workflows/*.json` file and independent control, propose a PR to PerceptionLab. Do not copy experiment-only scaffolding or claim a proposal is merged.
 10. **No hype, no false physics.** Distinguish implemented algorithms, measured results, biological analogies and open questions.
 
@@ -28,7 +49,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md). For each experiment: create a numbered 
 - **Experiment 001:** [causal-age test](experiments/001_causal_age/README.md), [saved PerceptionLab graph](workflows/001_wave_transit_predictor.json), [new reusable reader](nodes/temporal_transit_predictor_node.py), [numerical receipt](results/001_causal_age_first_run.json).
 - **CI:** [six tests passed](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43684369567), including matching every graph port against real upstream classes.
 - **Observed:** expected delay 6.58 frames at 128x128, used 7; mean +11.89 dB delayed-prediction advantage in a single simulated run. D=0 control exactly 0 dB. No claim of substrate learning.
-- **Upstream proposal:** [PerceptionLab PR #1](https://github.com/anttiluode/PerceptionLab/pull/1) — reusable node and workflow staged for review; **not merged** as of this note.
+- **Upstream contribution:** [PerceptionLab PR #1](https://github.com/anttiluode/PerceptionLab/pull/1) — **merged**.
 
 The next experiments should challenge the result with speed/distance changes, independent input patterns, and explicit failures, rather than assuming success generalizes.
 

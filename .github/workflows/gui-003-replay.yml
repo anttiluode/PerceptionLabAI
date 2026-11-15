@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: anttiluode/PerceptionLab
-          ref: ai/fix-wavefield-saved-size
+          ref: main
           path: PerceptionLab
       - uses: actions/setup-python@v5
         with:
