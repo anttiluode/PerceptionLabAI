@@ -1,0 +1,28 @@
+name: 006b bounded multi-context plasticity
+on:
+  push:
+    paths:
+      - "experiments/006b_bounded_selection/**"
+      - ".github/workflows/006b-bounded-selection.yml"
+  workflow_dispatch:
+jobs:
+  bounded-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -p test_006_reward_selection.py -v
+      - run: python experiments/006b_bounded_selection/run.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 006b-bounded-selection
+          path: results/006b_bounded_selection.json
