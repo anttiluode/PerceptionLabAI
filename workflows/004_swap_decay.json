@@ -52,8 +52,8 @@
       "config": {
         "node_title": "A / now SLOW 0.95",
         "decay": 0.95,
-        "arm_threshold": 0.08,
-        "release_threshold": 0.03,
+        "arm_threshold": 0.05896860795479459,
+        "release_threshold": 0.02620827020213093,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
@@ -69,8 +69,8 @@
       "config": {
         "node_title": "B / now FAST 0.86",
         "decay": 0.86,
-        "arm_threshold": 0.05,
-        "release_threshold": 0.02,
+        "arm_threshold": 0.05962559195033285,
+        "release_threshold": 0.026500263089036826,
         "pulse_amplitude": 0.24,
         "refractory": 3,
         "enabled": 1
