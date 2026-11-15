@@ -121,6 +121,7 @@ def simulate(graph,upstream,steps=TRIAL_STEPS,
     captures={}
     traces={i:[] for i in NODE_IDS}
     pulses={i:[] for i in NODE_IDS}
+    trace_peaks={str(i):0.0 for i in NODE_IDS}
     maxfield=0.0
     clipframes=0
     peak_energy=0.0
@@ -150,6 +151,7 @@ def simulate(graph,upstream,steps=TRIAL_STEPS,
             n.step()
         for i in NODE_IDS:
             traces[i].append(float(obj[i].trace))
+            trace_peaks[str(i)]=max(trace_peaks[str(i)],float(obj[i].trace))
             if obj[i].pulse:
                 pulses[i].append(tick)
         fmax=float(np.max(np.abs(obj[2].field)))
@@ -160,6 +162,7 @@ def simulate(graph,upstream,steps=TRIAL_STEPS,
             captures[tick]=[float(v) for v in obj[6].features]
     return {
         "features":captures,
+        "trace_peaks":trace_peaks,
         "spikes":{str(i):pulses[i] for i in NODE_IDS},
         "max_abs_field":round(maxfield,7),
         "clipped_frames":clipframes,
