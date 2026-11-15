@@ -28,6 +28,7 @@ class PopulationOrderReadoutNode(BaseNode):
         self.bias=0.0
         self.epoch=0
         self.spike_memory=np.zeros(3,dtype=float)
+        self.features=[0.0]*6
         self.score=0.0
         self.decision=0.0
         self.ready=0.0
@@ -46,7 +47,8 @@ class PopulationOrderReadoutNode(BaseNode):
         x=traces+list(map(float,self.spike_memory))
         self.features=list(x)  # precise post-step features used in training
         self.score=float(self.bias+sum(w*v for w,v in zip(self.weights,x)))
-        self.ready=1.0 if self.epoch>=self.start_frame else 0.0
+        model_loaded=(any(abs(w)>1e-12 for w in self.weights))
+        self.ready=1.0 if (self.epoch>=self.start_frame and model_loaded) else 0.0
         self.decision=(1.0 if self.score>=0 else -1.0) if self.ready else 0.0
         self.score_hist.append(self.score if self.ready else 0.0)
         self.score_hist=self.score_hist[-220:]
