@@ -83,3 +83,31 @@ The saved GUI graph has now been aligned to the **96×96 calibrated case** (thre
 Move lane B from `read_1` to `read_2`, which doubles the extra distance. With wave speed unchanged, nominal compensation becomes **approximately −10 frames** instead of −5. This is a different geometry with new one-pulse calibration; it tests whether the coincidence minimum follows *distance* rather than merely the original scheduling choice.
 
 The same runner supports `--tap-b 2` and `--out results/002_wave_xor_farther.json`.
+
+## Distance-doubling control (15 November 2026)
+
+[Independent farther-aperture CI run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686210614), **11/11 tests passed**, using actual upstream PulseSource, WaveField, and ResonatorSoma code.
+
+| B aperture | Extra distance predicted | Best B start offset | Coincidence at predicted offset | Coincidence without compensation |
+|---|---:|---:|---:|---:|
+| read_1 | 4.937 frames | **−5** | 15/15 active frames, 100% | 10/20, 50% |
+| read_2 | 9.874 frames | **−10** | 15/15 active frames, 100% | 5/25, 20% |
+
+In both cases XOR is silent for fully coincident windows and fires where
+the two binary arrival signals differ. Lane-off and both-off controls
+behaved according to the preset XOR truth table; no false gate event
+occurred with both stimuli absent. Fixed threshold calibration used
+30% of the relevant one-pulse peak, **separately for each aperture**.
+
+The geometry shift is a stronger causal check than just changing a source
+schedule. Still, the exact 100% overlap is a property of this deterministic,
+single-pulse, thresholded configuration. It should not be generalized
+to noisy input, broader amplitudes, dissimilar wavefields, or material
+computation without additional controls.
+
+**Provenance:** [first wave-XOR run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686062648),
+[corrected/checked workflow run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686210619),
+[farther-aperture run](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686210614).
+Original CI artifacts store full JSON sweep results; the compact permanent
+receipts in this repository record the verified headline metrics.
+

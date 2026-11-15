@@ -1,0 +1,134 @@
+{
+  "run_url": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686210614",
+  "experiment": "002_wave_xor",
+  "size": 96,
+  "steps": 170,
+  "far_aperture": 2,
+  "wave_speed_per_substep": 0.5,
+  "calibration_peaks": [
+    3.0652952194213867,
+    1.7406495809555054
+  ],
+  "frozen_thresholds": [
+    0.919588565826416,
+    0.5221948742866516
+  ],
+  "predicted_extra_travel_frames": 9.874285714285715,
+  "predicted_b_start_offset": -10,
+  "best_measured_offset": -10,
+  "best_overlap_fraction": 1,
+  "compensated": {
+    "offset": -10,
+    "a_active": 15,
+    "b_active": 15,
+    "both_active": 15,
+    "either_active": 15,
+    "xor_active": 0,
+    "truth_table_mismatches": 0
+  },
+  "uncompensated": {
+    "offset": 0,
+    "a_active": 15,
+    "b_active": 15,
+    "both_active": 5,
+    "either_active": 25,
+    "xor_active": 20,
+    "truth_table_mismatches": 0
+  },
+  "control_both_off": {
+    "a_active": 0,
+    "b_active": 0,
+    "xor_active": 0
+  },
+  "sweep_offsets_vs_overlap": [
+    [
+      -22,
+      0.111
+    ],
+    [
+      -20,
+      0.2
+    ],
+    [
+      -18,
+      0.304
+    ],
+    [
+      -16,
+      0.429
+    ],
+    [
+      -14,
+      0.579
+    ],
+    [
+      -12,
+      0.765
+    ],
+    [
+      -10,
+      1
+    ],
+    [
+      -8,
+      0.765
+    ],
+    [
+      -6,
+      0.579
+    ],
+    [
+      -4,
+      0.429
+    ],
+    [
+      -2,
+      0.304
+    ],
+    [
+      0,
+      0.2
+    ],
+    [
+      2,
+      0.111
+    ],
+    [
+      4,
+      0.034
+    ],
+    [
+      6,
+      0
+    ],
+    [
+      8,
+      0
+    ],
+    [
+      10,
+      0
+    ],
+    [
+      12,
+      0
+    ],
+    [
+      14,
+      0
+    ],
+    [
+      16,
+      0
+    ],
+    [
+      18,
+      0
+    ],
+    [
+      20,
+      0
+    ]
+  ],
+  "note": "Values transcribed from passing farther-aperture GitHub Actions log. One deterministic simulation with single-pulse calibration; actual WaveField code; preset XOR gate."
+}

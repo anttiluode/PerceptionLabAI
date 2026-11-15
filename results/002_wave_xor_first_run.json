@@ -1,0 +1,118 @@
+{
+  "run_url": "https://github.com/anttiluode/PerceptionLabAI/actions/runs/43686062648",
+  "experiment": "002_wave_xor",
+  "size": 96,
+  "steps": 170,
+  "far_aperture": 1,
+  "wave_speed_per_substep": 0.5,
+  "calibration_peaks": [
+    3.0652952194213867,
+    2.1971535682678223
+  ],
+  "frozen_thresholds": [
+    0.919588565826416,
+    0.6591460704803467
+  ],
+  "predicted_extra_travel_frames": 4.937142857142858,
+  "predicted_b_start_offset": -5,
+  "best_measured_offset": -5,
+  "best_overlap_fraction": 1,
+  "compensated": {
+    "offset": -5,
+    "a_active": 15,
+    "b_active": 15,
+    "both_active": 15,
+    "either_active": 15,
+    "xor_active": 0,
+    "truth_table_mismatches": 0
+  },
+  "uncompensated": {
+    "offset": 0,
+    "a_active": 15,
+    "b_active": 15,
+    "both_active": 10,
+    "either_active": 20,
+    "xor_active": 10,
+    "truth_table_mismatches": 0
+  },
+  "control_both_off": {
+    "a_active": 0,
+    "b_active": 0,
+    "xor_active": 0
+  },
+  "sweep_offsets_vs_overlap": [
+    [
+      -16,
+      0.154
+    ],
+    [
+      -14,
+      0.25
+    ],
+    [
+      -12,
+      0.364
+    ],
+    [
+      -10,
+      0.5
+    ],
+    [
+      -8,
+      0.667
+    ],
+    [
+      -6,
+      0.875
+    ],
+    [
+      -5,
+      1
+    ],
+    [
+      -4,
+      0.875
+    ],
+    [
+      -2,
+      0.667
+    ],
+    [
+      0,
+      0.5
+    ],
+    [
+      2,
+      0.364
+    ],
+    [
+      4,
+      0.25
+    ],
+    [
+      6,
+      0.154
+    ],
+    [
+      8,
+      0.071
+    ],
+    [
+      10,
+      0
+    ],
+    [
+      12,
+      0
+    ],
+    [
+      14,
+      0
+    ],
+    [
+      16,
+      0
+    ]
+  ],
+  "note": "Values transcribed from first passing CI log; JSON artifact contains full-precision sweep. One deterministic simulation. Existing preset XOR; no emergent computation."
+}
