@@ -192,3 +192,18 @@ Same body as 009, with `harden_rate = 0.2` on every `GrowingReturnNode`.
 **Measured headless, 96 held-out bodies, first history still read:** soft 92 → 73 → 77 (before, after 10, after 20 opposite-order episodes); by use 90 → 83 → 72; by age 87 → 86 → 84. Use against soft after 10: p = 0.064 (rule not met). Use against age after 20: p = 0.0005 in favour of age.
 
 Graphs show a single continuous episode; the interference protocol exists only in the runner. **Neither 010 graph has been run in the GUI.**
+
+## 011 — Two independent histories, old plus new
+
+[Protocol and precommitted decision rule](../experiments/011_dual_history/README.md) · [runner](../experiments/011_dual_history/run.py).
+
+**Exactly four crossed histories:** AB→AB, AB→BA, BA→AB, BA→BA. After each first or second episode the simulation wipes all fast state; only the same body's branch weights, alive mask and hardness survive. Eight training body IDs and 16 different test IDs, all four crosses per ID, give **64 final held-out two-history bodies per condition**. The test compares *soft*, *use-hardened*, *age-hardened*, and *frozen-after-first-stage*. The first-history reader is fitted after the first phase and then frozen; the second-history reader is independently fitted on second-phase training bodies only. No test labels touch the physical growth rule or the reader fit.
+
+GUI-loadable **single-episode illustrations** (all use 009's original wave and working node ports):
+
+- [011 soft, AB](../workflows/011_soft_AB_single_episode.json) / [011 soft, BA](../workflows/011_soft_BA_single_episode.json)
+- [011 age-hardening, AB](../workflows/011_age_AB_single_episode.json) / [011 age-hardening, BA](../workflows/011_age_BA_single_episode.json)
+
+**Important:** those four JSON files each start from uniform, untrained branches and execute ONE episode. They are not two-history saved structures, and cannot by themselves demonstrate 011's dual-memory results. The multi-episode re-instantiation, state transfer and frozen diagnostic readers are implemented in the **headless runner only**. The GUI has not been used to verify 011. Reproduction requires the 009/010 `growing_return_node.py` and `fading_history_spike_node.py` in PerceptionLab's node folder.
+
+Primary success is jointly old≥75%, new≥70%, and higher **joint** correctness than soft with a paired p<0.05 at 20 second-order episodes. An age body that only remembers the old history has **not** passed. All baseline and full-run receipts are preserved separately; short smoke tests are clearly marked non-scientific.

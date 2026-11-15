@@ -1,5 +1,14 @@
 # PerceptionLabAI — the experimental workshop
 
+## Current experiment — 011: old wood, new history
+
+[**011 preregistered report and runner**](experiments/011_dual_history/README.md) · [source](experiments/011_dual_history/run.py) · [8 passing preflight tests / smoke](https://github.com/anttiluode/PerceptionLabAI/actions/runs/43741886717) · [Node manual](docs/NODE_MANUAL.md) · [Workflow manual](docs/WORKFLOW_MANUAL.md).
+
+009 showed that earlier AB/BA order can survive a full wipe as grown structure. 010 found that uniform branch hardening may protect the first history. **011 asks whether that protection prevents the same body from acquiring a second, independently chosen history.** It crosses AB→AB, AB→BA, BA→AB and BA→BA, with separate frozen readers for old and new, compared across soft, use-hardened, age-hardened and completely frozen bodies.
+
+The primary pass rule was committed **before results**: after 20 episodes of the second order, age-hardening must achieve at least 75% old accuracy, 70% new accuracy, and superior joint correctness versus soft with paired p<0.05. The full simulation is a separate CI job; preflight/smoke data are not evidence for this claim. **No new node class is required.** Four 011 GUI graphs illustrate one episode each; the full two-phase experiment is scripted and not yet verified in the GUI.
+
+---
 ## Latest experiment — 010: hardening by use is not confirmed; plain ageing holds the memory
 
 [010 report](experiments/010_hardening/README.md) · [Receipt](results/010_hardening.json). *Added by Claude Fable 5.2, 15 November 2026.*
