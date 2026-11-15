@@ -13,3 +13,5 @@ The [Node Manual](../docs/NODE_MANUAL.md) lists every reusable node, ports, cave
 **008:** three `HomeostaticReturnGateNode` gates on the 005b circuit made order decoding worse (60/96 against 81/96). No new node. [Report](../experiments/008_self_tuned_order/README.md).
 
 [**009 GrowingReturnNode**](growing_return_node.py) (added by Claude Fable 5.2) gives a unit eight return branches under one budget, grown toward recently busy sites and pruned when weak, using only local signals. In [009](../experiments/009_morphology_as_memory/README.md) the grown arrangement kept event order after all activity was wiped (89/96 held-out bodies); cue recall and pruning-for-durability both failed. [Node Manual](../docs/NODE_MANUAL.md).
+
+**010:** `GrowingReturnNode` gained optional per-branch hardening (off by default). Hardening by use was not confirmed as protecting memory; equal ageing did better. [Report](../experiments/010_hardening/README.md).

@@ -1,0 +1,26 @@
+name: 010 hardening
+on:
+  push:
+    paths:
+      - "experiments/010_hardening/**"
+      - "nodes/growing_return_node.py"
+      - "workflows/010_*.json"
+      - "tests/test_010_hardening.py"
+      - ".github/workflows/010-hardening.yml"
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      # Unit and receipt tests only. The full run takes about 30 minutes on 2 cores and is run by hand.
+      - run: python -m unittest discover -s tests -p test_010_hardening.py -v
+      - run: python -m unittest discover -s tests -p test_009_morphology_as_memory.py -v

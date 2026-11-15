@@ -16,6 +16,7 @@ reusable graphs should be proposed upstream.
 | 007 | [Homeostatic A return](../workflows/007_homeostatic_a_return.json) | `HomeostaticReturnGateNode` | Can a return edge reach the turn-taking regime using only its own unit's firing rate? | **Yes from five starting weights: 1.00 → 0.41, B rescued, alternation at ~104 frames; an isolated loop dies**: [007](../experiments/007_homeostatic_return/README.md) |
 | 008 | [Self-tuning, three units](../workflows/008_AB_self_tuning_live.json) | Reuses `HomeostaticReturnGateNode` three times | Does a self-tuned network hold AB/BA order better than hand-set weights? | **No: 60/96 against 81/96 held-out, p = 0.0003**: [008](../experiments/008_self_tuned_order/README.md) |
 | 009 | [Growing branches, one episode](../workflows/009_AB_growing_one_episode.json) | `GrowingReturnNode` | Does grown and pruned branch structure keep the order of past events after all activity is wiped? | **Yes for readout: 89/96 held-out bodies (growth off 48, scrambled 55). No for cue recall, no for pruning durability**: [009](../experiments/009_morphology_as_memory/README.md) |
+| 010 | [Growing with hardening by use](../workflows/010_AB_growing_hardening_by_use.json) | `GrowingReturnNode` with hardening | If used branches harden, does the first history survive later opposite-order experience? | **Not confirmed (83 vs 73 of 96 after 10 episodes, p = 0.064; 72 vs 77 after 20). Equal ageing held 84/96 after 20**: [010](../experiments/010_hardening/README.md) |
 
 004 controls available as GUI-loadable graphs:
 [ A alone ](../workflows/004_a_only.json),
@@ -178,3 +179,16 @@ Three fade-triggered units on one 96×96 wave, each returning through a `Growing
 **Measured headless, 96 held-out bodies:** probe readout of the history 89/96; growth off 48/96; scrambled positions 55/96; no pruning 88/96; direct weight readout 91/96. Cue recall failed (cue A: opposite to prediction in 42 of 48 pairs). After ten opposite-order episodes the first history is read in 64/96 with pruning and 57/96 without (p = 0.28).
 
 The runner wipes all fast state between episodes; a GUI graph is one continuous episode. Copy `growing_return_node.py` and `fading_history_spike_node.py` into PerceptionLab `nodes/`, restart and load. **No 009 graph has been run in the GUI.**
+
+## 010 — Hardening
+
+*Added by Claude Fable 5.2, 15 November 2026.* [Report](../experiments/010_hardening/README.md) · [Receipt](../results/010_hardening.json).
+
+Same body as 009, with `harden_rate = 0.2` on every `GrowingReturnNode`.
+
+- [One AB episode, hardening by use](../workflows/010_AB_growing_hardening_by_use.json) — `harden_mode = 1`: a branch hardens by its own weight each time its unit fires.
+- [One AB episode, hardening by age](../workflows/010_AB_growing_hardening_by_age.json) — `harden_mode = 2`: every living branch hardens equally.
+
+**Measured headless, 96 held-out bodies, first history still read:** soft 92 → 73 → 77 (before, after 10, after 20 opposite-order episodes); by use 90 → 83 → 72; by age 87 → 86 → 84. Use against soft after 10: p = 0.064 (rule not met). Use against age after 20: p = 0.0005 in favour of age.
+
+Graphs show a single continuous episode; the interference protocol exists only in the runner. **Neither 010 graph has been run in the GUI.**

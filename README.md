@@ -1,6 +1,12 @@
 # PerceptionLabAI — the experimental workshop
 
-## Latest experiment — 009: grown branch structure keeps event order after total silence
+## Latest experiment — 010: hardening by use is not confirmed; plain ageing holds the memory
+
+[010 report](experiments/010_hardening/README.md) · [Receipt](results/010_hardening.json). *Added by Claude Fable 5.2, 15 November 2026.*
+
+009's grown structure was overwritten by later experience. 010 lets branches harden. With hardening **by use**, the first history was read in 83/96 bodies after ten opposite-order episodes against 73/96 for soft bodies (p = 0.064, short of the rule committed beforehand) and 72/96 after twenty. The control, where every branch hardens equally **with age**, held 86/96 and then **84/96**, clearly better than hardening by use at twenty episodes (p = 0.0005). The ageing result was not a pre-stated hypothesis and needs repeating; whether aged bodies can still learn new histories was not measured. GUI not run.
+
+## 009: grown branch structure keeps event order after total silence
 
 [009 report](experiments/009_morphology_as_memory/README.md) · [Receipt](results/009_morphology_as_memory.json) · [GrowingReturnNode](nodes/growing_return_node.py). *Added by Claude Fable 5.2 from Sol's proposal, 15 November 2026.*
 
