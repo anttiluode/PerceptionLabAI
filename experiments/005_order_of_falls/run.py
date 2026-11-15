@@ -212,11 +212,17 @@ def dataset(upstream,kind,cal,trials,steps=TRIAL_STEPS):
     return records
 
 
-def fit_linear(train,checkpoint):
+FEATURE_SETS={
+    "all_six":(0,1,2,3,4,5),
+    "traces_only":(0,1,2),
+    "spike_history_only":(3,4,5),
+}
+
+def fit_linear(train,checkpoint,feature_set="all_six"):
     """Ridge probe, training statistics ONLY. No leakage from test labels."""
     xs=[];labels=[]
     for (_,order),record in sorted(train.items()):
-        xs.append(record["features"][checkpoint])
+        xs.append([record["features"][checkpoint][i] for i in FEATURE_SETS[feature_set]])
         labels.append(1. if order=="AB" else -1.)
     X=np.asarray(xs,dtype=float); y=np.asarray(labels)
     avg=X.mean(axis=0)
@@ -228,7 +234,8 @@ def fit_linear(train,checkpoint):
     bias=float(y.mean()-coef@ (np.zeros_like(avg))) # normalized intercept
     raw_w=coef/std
     raw_b=bias-float(raw_w@avg)
-    return {"weights":[float(w) for w in raw_w],
+    return {"feature_set":feature_set,
+            "weights":[float(w) for w in raw_w],
             "bias":raw_b,
             "train_mean":[float(z) for z in avg],
             "train_std":[float(z) for z in std]}
@@ -241,7 +248,8 @@ def test_linear(test,model,checkpoint):
     for j in pairs:
         success=[]
         for order in ("AB","BA"):
-            x=np.asarray(test[(j,order)]["features"][checkpoint])
+            x=np.asarray([test[(j,order)]["features"][checkpoint][i]
+                          for i in FEATURE_SETS[model["feature_set"]]])
             score=float(x@w+b)
             correct=(score>=0 if order=="AB" else score<0)
             success.append(bool(correct));good+=int(correct)
@@ -274,10 +282,13 @@ def run(upstream,steps=TRIAL_STEPS):
             raise RuntimeError("Wave clipping: calibration/energy need rechecking")
         stages={}
         for t in SNAPSHOTS:
-            model=fit_linear(train,t)
-            stages[str(t)]={"test":test_linear(held,model,t),
-                            "training":test_linear(train,model,t)}
-            if t==360:stages[str(t)]["frozen_model"]=model
+            models={key:fit_linear(train,t,key) for key in FEATURE_SETS}
+            stages[str(t)]={"test":test_linear(held,models["all_six"],t),
+                            "training":test_linear(train,models["all_six"],t),
+                            "ablation_readouts":{
+                                key:test_linear(held,m,t)
+                                for key,m in models.items()}}
+            if t==360:stages[str(t)]["frozen_model"]=models["all_six"]
         out[mode]={
            "stages":stages,
            "train_pair_count":len(TRAIN),
