@@ -1,0 +1,27 @@
+name: 005 explore third fading unit
+on:
+  push:
+    paths:
+      - "experiments/005_order_of_falls/explore_C.py"
+      - ".github/workflows/005-c-recruitment.yml"
+  workflow_dispatch:
+jobs:
+  c-recruitment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python experiments/005_order_of_falls/explore_C.py --upstream PerceptionLab
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 005-third-unit-recruitment
+          path: results/005_C_recruitment.json
