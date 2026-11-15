@@ -1,0 +1,31 @@
+name: 009 morphology as memory
+on:
+  push:
+    paths:
+      - "experiments/009_morphology_as_memory/**"
+      - "nodes/growing_return_node.py"
+      - "workflows/009_*.json"
+      - "tests/test_009_morphology_as_memory.py"
+      - ".github/workflows/009-morphology-as-memory.yml"
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: anttiluode/PerceptionLab
+          path: PerceptionLab
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install numpy opencv-python-headless
+      - run: python -m unittest discover -s tests -p test_009_morphology_as_memory.py -v
+      # CI runs the small development-seed version; the full run (about 20 minutes on 2 cores) is run by hand.
+      - run: python experiments/009_morphology_as_memory/run.py --upstream PerceptionLab --dev --out results/009_ci_dev_rerun.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 009-morphology-dev
+          path: results/009_ci_dev_rerun.json

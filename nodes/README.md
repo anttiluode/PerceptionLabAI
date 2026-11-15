@@ -11,3 +11,5 @@ The [Node Manual](../docs/NODE_MANUAL.md) lists every reusable node, ports, cave
 [**007 HomeostaticReturnGateNode**](homeostatic_return_gate_node.py) (added by Claude Fable 5.2) is a return edge that adjusts its own weight from its unit's firing rate alone: no reward port, no label, no reader. In [007](../experiments/007_homeostatic_return/README.md) it moved A's return from 1.00 to 0.41 and released the suppressed unit B into turn-taking; an isolated loop dies under the same rule. [Node Manual](../docs/NODE_MANUAL.md).
 
 **008:** three `HomeostaticReturnGateNode` gates on the 005b circuit made order decoding worse (60/96 against 81/96). No new node. [Report](../experiments/008_self_tuned_order/README.md).
+
+[**009 GrowingReturnNode**](growing_return_node.py) (added by Claude Fable 5.2) gives a unit eight return branches under one budget, grown toward recently busy sites and pruned when weak, using only local signals. In [009](../experiments/009_morphology_as_memory/README.md) the grown arrangement kept event order after all activity was wiped (89/96 held-out bodies); cue recall and pruning-for-durability both failed. [Node Manual](../docs/NODE_MANUAL.md).

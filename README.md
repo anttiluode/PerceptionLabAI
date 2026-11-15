@@ -1,6 +1,14 @@
 # PerceptionLabAI — the experimental workshop
 
-## Latest experiment — 008: self-tuned returns hold order worse, not better
+## Latest experiment — 009: grown branch structure keeps event order after total silence
+
+[009 report](experiments/009_morphology_as_memory/README.md) · [Receipt](results/009_morphology_as_memory.json) · [GrowingReturnNode](nodes/growing_return_node.py). *Added by Claude Fable 5.2 from Sol's proposal, 15 November 2026.*
+
+Each unit now has eight candidate return branches sharing a fixed budget. They grow toward recently busy sites and are pruned for good when weak, by a rule that sees only the unit's own pulse and the field at its branch tips. Bodies are grown on A-then-B or B-then-A histories, with all activity wiped between episodes. After a full wipe, one identical probe pulse reveals the history in **89 of 96 held-out bodies**; growth switched off gives 48/96 and scrambled branch positions 55/96. The rules were committed before the run.
+
+**Two of three questions failed:** cue A does not recall B (one cue came out opposite to prediction), and pruning does not protect the memory from later opposite-order experience (64/96 against 57/96, p = 0.28). No task benefit is shown. GUI not run.
+
+## 008: self-tuned returns hold order worse, not better
 
 [008 report](experiments/008_self_tuned_order/README.md) · [Receipt](results/008_self_tuned_order.json) · [runner](experiments/008_self_tuned_order/run.py). *Added by Claude Fable 5.2, 15 November 2026.*
 

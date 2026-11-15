@@ -125,3 +125,13 @@ Each frame the node updates a running firing rate, `rate += (spiked - rate) / ra
 **Limits:** the rule cannot restart a unit that has gone silent, and an isolated loop dies under it. The target rate is set by hand. Nothing in 007 measures memory or order information. Firing-rate homeostasis is a known mechanism; this node is a test component, not a biological model. Workshop only; not proposed upstream. Seen working in the GUI on the both-homeostatic graph on 15 November 2026 (A weight falling to 0.36, B starting to fire); see the [Workflow Manual](WORKFLOW_MANUAL.md).
 
 **008 follow-up on this node:** three of these gates on the 005b circuit, self-tuned with no labels and then frozen, gave **worse** AB/BA order decoding than the hand-set weights (60/96 against 81/96 held-out, paired p = 0.0003). The node regulates firing and shares the field; it should not be described as improving memory. [008 report](../experiments/008_self_tuned_order/README.md).
+
+## 009 — GrowingReturnNode (workshop, local growth and pruning)
+
+*Added by Claude Fable 5.2, 15 November 2026.* [Source](../nodes/growing_return_node.py) · [009 report](../experiments/009_morphology_as_memory/README.md) · [Receipt](../results/009_morphology_as_memory.json).
+
+Category: Cognition. Inputs: `pre_spike` (the unit's pulse) and `site_0` … `site_7` (field value at each branch tip), all signals. Outputs: `out_0` … `out_7` (the pulse times each branch weight, to be wired to WaveField `write_0` … `write_7`), `w_0` … `w_7`, `living_branches`, `largest_weight`.
+
+Every frame each site keeps a leaky trace of absolute field activity. When the unit fires, each living branch moves by `learning_rate * (p_s - mean p)`, where `p_s` is that site's share of recent activity; weights are clipped at zero, branches below `prune_threshold` are removed permanently, and the living branches are rescaled to sum to `budget`. GUI parameters: `budget`, `learning_rate`, `trace_decay`, `prune_threshold`, `learn_enabled`, and the eight weights `w0` … `w7`. Saved graphs also carry `weights` and `alive` lists. With `prune_threshold = 0` nothing is ever pruned; with `learn_enabled = 0` it is a fixed fan-out.
+
+**Measured in 009:** histories of opposite event order grow different branch arrangements, readable after a full wipe by one probe pulse (89/96 held-out bodies). **Limits:** branches grow toward wherever the field is busiest, which is the middle of the line, so cue recall failed; later experience overwrites most of the record, pruning or not; no task benefit shown. Hebbian growth, budget competition and pruning are known mechanisms. Workshop only; not proposed upstream; GUI not yet verified.

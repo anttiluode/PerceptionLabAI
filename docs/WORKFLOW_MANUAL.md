@@ -15,6 +15,7 @@ reusable graphs should be proposed upstream.
 | 004 | [Two fades, one field](../workflows/004_two_fades_one_field.json) | Reuses `FadingHistorySpikeNode` twice | Can two different histories influence each other's timing? | **Two tested regimes: suppression at A=0.50+, alternating mutual regeneration at A=0.15–0.45**: [004](../experiments/004_two_histories/README.md) |
 | 007 | [Homeostatic A return](../workflows/007_homeostatic_a_return.json) | `HomeostaticReturnGateNode` | Can a return edge reach the turn-taking regime using only its own unit's firing rate? | **Yes from five starting weights: 1.00 → 0.41, B rescued, alternation at ~104 frames; an isolated loop dies**: [007](../experiments/007_homeostatic_return/README.md) |
 | 008 | [Self-tuning, three units](../workflows/008_AB_self_tuning_live.json) | Reuses `HomeostaticReturnGateNode` three times | Does a self-tuned network hold AB/BA order better than hand-set weights? | **No: 60/96 against 81/96 held-out, p = 0.0003**: [008](../experiments/008_self_tuned_order/README.md) |
+| 009 | [Growing branches, one episode](../workflows/009_AB_growing_one_episode.json) | `GrowingReturnNode` | Does grown and pruned branch structure keep the order of past events after all activity is wiped? | **Yes for readout: 89/96 held-out bodies (growth off 48, scrambled 55). No for cue recall, no for pruning durability**: [009](../experiments/009_morphology_as_memory/README.md) |
 
 004 controls available as GUI-loadable graphs:
 [ A alone ](../workflows/004_a_only.json),
@@ -164,3 +165,16 @@ All five graphs are the 005b three-active circuit with each of the three returns
 **Measured headless, 96 held-out runs at frame 650:** hand-set 81, C's return cut 85, self-tuned frozen 60, self-tuned live 75, passive 48, uniform control 46, rotated control 65. Self-tuned is worse than hand-set (paired p = 0.0003). Cutting C's return is not distinguishable from keeping it (p = 0.48), which does not support the 16-run result of 005b.
 
 The order readout node in these graphs is untrained; readers are fitted offline. Copy the three workshop nodes into PerceptionLab `nodes/`, restart and load. **No 008 graph has been run in the GUI.**
+
+## 009 — Morphology as memory
+
+*Added by Claude Fable 5.2 from Sol's proposal, 15 November 2026.* [Report](../experiments/009_morphology_as_memory/README.md) · [Receipt](../results/009_morphology_as_memory.json).
+
+Three fade-triggered units on one 96×96 wave, each returning through a `GrowingReturnNode` with eight branches (one per write site). Stimulus A enters at site 0, B at site 7.
+
+- [Growing, AB episode](../workflows/009_AB_growing_one_episode.json) · [BA episode](../workflows/009_BA_growing_one_episode.json) — equal branches at the start, growth on. Watch the bar display on each Growing Return node.
+- [Probe a grown AB body](../workflows/009_probe_AB_grown_body.json) · [grown BA body](../workflows/009_probe_BA_grown_body.json) · [naive body](../workflows/009_probe_naive_body.json) — growth off, one pulse at site 3.
+
+**Measured headless, 96 held-out bodies:** probe readout of the history 89/96; growth off 48/96; scrambled positions 55/96; no pruning 88/96; direct weight readout 91/96. Cue recall failed (cue A: opposite to prediction in 42 of 48 pairs). After ten opposite-order episodes the first history is read in 64/96 with pruning and 57/96 without (p = 0.28).
+
+The runner wipes all fast state between episodes; a GUI graph is one continuous episode. Copy `growing_return_node.py` and `fading_history_spike_node.py` into PerceptionLab `nodes/`, restart and load. **No 009 graph has been run in the GUI.**
